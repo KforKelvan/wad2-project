@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map</title>
+</head>
+<body>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIkO6mQjvyODa0h1w0xCgr5Z-ZofMRPok&libraries=places"></script>
+
+    <div id="map"></div>
+
+    <script>
+        function loadMapScript() {
+            var script = document.createElement('script');
+            script.src = 'script.js'; // Your JavaScript file
+            document.body.appendChild(script);
+        }
+
+        // Load the map script after the API script is fully loaded
+        window.onload = loadMapScript;
+    </script>
+
+
+</body>
+</html>
