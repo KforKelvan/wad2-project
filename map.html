@@ -1,27 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Map</title>
+  <title>Google Maps API Example</title>
+  <style>
+    /* Set the size of the map container */
+    #map {
+      height: 400px;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
+  <!-- Map container -->
+  <div id="map"></div>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIkO6mQjvyODa0h1w0xCgr5Z-ZofMRPok&libraries=places"></script>
+  <script>
+    function initMap() {
+      // Set the initial coordinates and create a new map
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 40.7128, lng: -74.0060 }, // New York City
+        zoom: 10, // Zoom level (1 = world, 20 = street level)
+      });
 
-    <div id="map"></div>
-
-    <script>
-        function loadMapScript() {
-            var script = document.createElement('script');
-            script.src = 'script.js'; // Your JavaScript file
-            document.body.appendChild(script);
-        }
-
-        // Load the map script after the API script is fully loaded
-        window.onload = loadMapScript;
-    </script>
-
-
+      // Create a marker and place it on the map
+      var marker = new google.maps.Marker({
+        position: { lat: 40.7128, lng: -74.0060 }, // Marker position (New York City)
+        map: map, // Map to place the marker on
+        title: 'New York City', // Marker title
+      });
+    }
+  </script>
+  
+  <!-- Include the Google Maps API script with your API key -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIkO6mQjvyODa0h1w0xCgr5Z-ZofMRPok&callback=initMap" async defer></script>
 </body>
 </html>
