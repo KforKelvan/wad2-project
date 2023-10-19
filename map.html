@@ -1,52 +1,56 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Google Maps API Example</title>
+  <title>Find Nearest Polyclinic</title>
   <style>
     /* Set the size of the map container */
     #map {
       height: 400px;
-      width: 50%;
+      width: 100%;
     }
   </style>
+
 </head>
 <body>
-  <!-- Button to show nearby polyclinics at user's current location -->
-  <button onclick="showNearbyPolyclinics()">Show Nearby Polyclinics</button>
+  <!-- Button to find nearest polyclinic -->
+  <button onclick="findNearestPolyclinic()">Find Nearest Polyclinic</button>
 
   <!-- Map container -->
   <div id="map"></div>
-
+  <div id="directionsPanel"></div>
+  
   <script>
     var map;
-    var markers = [];
     var directionsService;
     var directionsDisplay;
+    var markers = [];
 
     function initMap() {
-      // Default map coordinates and initial zoom level (centered in New York City)
+      // Initialize the map
       map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 1.2963, lng: 103.8502 }, // SMU
+        center: { lat: 1.2963, lng: 103.8502 }, // Default center (e.g., SMU)
         zoom: 15,
       });
-      
+
+      // Initialize the Directions Service and Display
       directionsService = new google.maps.DirectionsService();
       directionsDisplay = new google.maps.DirectionsRenderer();
       directionsDisplay.setMap(map);
+      directionsDisplay.setPanel(document.getElementById("directionsPanel"));
     }
 
-    function showNearbyPolyclinics() {
+    function findNearestPolyclinic() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
           var userLocation = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
+          console.log(userLocation);
           map.setCenter(userLocation);
           clearMarkers();
-          // Fetch actual nearby polyclinic data from an API and display markers
-          // You would need to implement this functionality using an external API.
-          fetchNearbyPolyclinics(userLocation);
+          calculateNearestPolyclinic(userLocation);
         }, function() {
           alert('Geolocation service failed. Please enable location services in your browser.');
         });
@@ -55,16 +59,12 @@
       }
     }
 
-    function fetchNearbyPolyclinics(userLocation) {
-      // Implement code here to fetch nearby polyclinic data from an API.
-      // You would use the user's location (userLocation) to request nearby polyclinics.
-      // Once you have the data, create markers and display them on the map.
-      // This part depends on the data source and how you plan to fetch and display the polyclinic data.
-      // You may need to use a separate API that provides polyclinic information and nearby search capabilities.
+    function calculateNearestPolyclinic(userLocation) {
+      // Simulated polyclinic data (replace with your actual polyclinic data)
       var polyclinics = [
         // Polyclinic data here
         { name: 'AMK Polyclinic', lat: 1.3744, lng: 103.8458 },
-        { name: 'Geylang Polyclinic', lat: 1.3193, lng: 103.8873 },
+        { name: 'Geylang Polyclinic', lat: 1.3193, lng: 103.8873 }, 
         { name: 'Hougang Polyclinic', lat: 1.3698, lng: 103.8892 },
         { name: 'Kallang Polyclinic', lat: 1.3167, lng: 103.8587 },
         { name: 'Toa Payoh Polyclinic', lat: 1.3346, lng: 103.8589 },
@@ -89,30 +89,53 @@
         { name: 'Queenstown Polyclinic', lat: 1.2985, lng: 103.80109}
       ];
 
-      // Add markers for nearby polyclinics
+      var nearestPolyclinic;
+      var nearestDistance = Number.MAX_VALUE;
+
       polyclinics.forEach(function(polyclinic) {
+        var distance = haversineDistance(userLocation, polyclinic);
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          nearestPolyclinic = polyclinic;
+        }
         var marker = new google.maps.Marker({
           map: map,
           position: { lat: polyclinic.lat, lng: polyclinic.lng },
           title: polyclinic.name,
         });
-
-        // Store markers in an array for later removal
         markers.push(marker);
-
-        // Calculate and display directions from user's location to the nearest polyclinic
-        calculateAndDisplayRoute(userLocation, { lat: polyclinic.lat, lng: polyclinic.lng });
       });
+      console.log(nearestPolyclinic)
+      // Display the route to the nearest polyclinic
+      calculateAndDisplayRoute(userLocation, nearestPolyclinic);
+    }
+
+    function haversineDistance(point1, point2) {
+      // Calculate the distance between two points using the Haversine formula
+      var lat1 = point1.lat;
+      var lon1 = point1.lng;
+      var lat2 = point2.lat;
+      var lon2 = point2.lng;
+      var R = 6371; // Radius of the Earth in kilometers
+      var dLat = (lat2 - lat1) * (Math.PI / 180);
+      var dLon = (lon2 - lon1) * (Math.PI / 180);
+      var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      var distance = R * c;
+      return distance;
     }
 
     function calculateAndDisplayRoute(origin, destination) {
-      var request = { 
+      var request = {
         origin: origin,
         destination: destination,
         travelMode: google.maps.TravelMode.TRANSIT
       };
-      console.log(directionsService);
+      console.log(request);
+
       directionsService.route(request, function(result, status) {
+        console.log(result);
+        console.log(status);
         if (status == google.maps.DirectionsStatus.OK) {
           directionsDisplay.setDirections(result);
         } else {
