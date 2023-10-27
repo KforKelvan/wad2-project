@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Login Page</title>
+    <link href="bootstrap/css/styles.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-database-compat.js"></script>
+</head>
+
+<body class="bg-success">
+    <div id="app">
+        <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-5">
+                                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                    <div class="card-header">
+                                        <h3 class="text-center font-weight-light my-4">Login</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" id="inputEmail" type="email"
+                                                    placeholder="name@example.com" v-model="email" />
+                                                <label for="inputEmail">Email address</label>
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" id="inputPassword" type="password"
+                                                    placeholder="Password" v-model="password" />
+                                                <label for="inputPassword">Password</label>
+                                            </div>
+
+                                            <!-- <div class="form-check mb-3">
+                                                <input class="form-check-input" id="inputRememberPassword"
+                                                    type="checkbox" value="" />
+                                                <label class="form-check-label" for="inputRememberPassword">Remember
+                                                    Password</label>
+                                            </div> -->
+                                            <div>
+                                                <p :class="messageColor">{{message}}</p>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                                <a class="small">Forgot Password?</a>
+                                                <a class="btn btn-primary" @click="login()">Login</a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="card-footer text-center py-3">
+                                        <div class="small"><a href="register.html">Need an account? Sign up!</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+            <div id="layoutAuthentication_footer">
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Made for IS216 G6T? 2023</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    crossorigin="anonymous"></script>
+<script src="bootstrap/js/scripts.js"></script>
+
+</html>
+
+<script>
+    // Initialize Firebase 
+    const firebaseConfig = {
+        databaseURL: "https://wad2-project-577ea-default-rtdb.asia-southeast1.firebasedatabase.app",
+        apiKey: "AIzaSyDWR7cQApDtFlD2wx5Btku67Bhg8_xwsUg",
+        authDomain: "wad2-project-577ea.firebaseapp.com",
+        projectId: "wad2-project-577ea",
+        storageBucket: "wad2-project-577ea.appspot.com",
+        messagingSenderId: "878918082978",
+        appId: "1:878918082978:web:250e7cfd55234ea00012fb",
+        measurementId: "G-SLGD98DFQ5"
+    };
+    firebase.initializeApp(firebaseConfig);
+    var database = firebase.database();
+
+    const app = Vue.createApp({
+        data() {
+            return {
+                email: "",
+                password: "",
+                message: "",
+                messageColor: ""
+
+            }
+        },
+        methods: {
+            async login() {
+                //Check if this account exists
+                let isRegisteredBefore = false;
+                var userRef = firebase.database()
+                    .ref('users')
+                    .orderByChild("email")
+                    .equalTo(this.email)
+
+                let snapshot = await userRef.once('value')
+                let userVal = snapshot.val();
+                console.log("userVal: ", userVal)
+                if (userVal != null) {
+                    //If account exists check password
+                    //To extract the key
+                    let userKey = Object.keys(userVal)[0];
+                    let user = userVal[userKey];
+                    if (user.password == this.password) {
+                        //Login successful
+                        localStorage.setItem("user", JSON.stringify({
+                            email: user.email,
+                            fName: user.fName,
+                            lName: user.lName,
+                            userKey: userKey
+                        }));
+                        this.message = "Login successful, redirecting in 2 seconds...";
+                        this.messageColor = "text-success";
+                        setTimeout(function () {
+                            window.location.href = "bloodpressure.html";
+                        }, 2000);
+
+                    } else {
+                        this.message = "Email or password is incorrect";
+                        this.messageColor = "text-danger";
+                    }
+                } else {
+                    this.message = "Email or password is incorrect";
+                    this.messageColor = "text-danger";
+                }
+            }
+        },
+    });
+
+    const vm = app.mount("#app")
+
+</script>
