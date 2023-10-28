@@ -147,9 +147,9 @@
                                 <div class="row mb-3">
                                     <div class="col">
                                         <div class="form-floating mb-3 mb-md-0">
-                                            <input class="form-control" id="systolicBP" type="text" placeholder=""
-                                                v-model="systolicBP" />
-                                            <label for="systolicBP">Systolic Blood Pressure</label>
+                                            <input class="form-control" id="date" type="date" placeholder=""
+                                                v-model="date" />
+                                            <label for="date">Entry date</label>
                                         </div>
                                     </div>
                                     <div class="col">
@@ -161,11 +161,12 @@
                                     </div>
                                     <div class="col">
                                         <div class="form-floating mb-3 mb-md-0">
-                                            <input class="form-control" id="date" type="date" placeholder=""
-                                                v-model="date" />
-                                            <label for="date">Entry date</label>
+                                            <input class="form-control" id="systolicBP" type="text" placeholder=""
+                                                v-model="systolicBP" />
+                                            <label for="systolicBP">Systolic Blood Pressure</label>
                                         </div>
                                     </div>
+
                                 </div>
                                 <button class="btn btn-primary" @click="submitEntry()">Submit</button>
                             </div>
@@ -174,33 +175,7 @@
                         <h1 class="mt-4">Blood Pressure Readings</h1>
                         <div class="card mb-4">
                             <div class="card-body">
-                                <table id="datatable" class="table table-striped" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>Systolic BP</th>
-                                            <th>Diastolic BP</th>
-                                            <th>Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>ABC</td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td>ABCD</td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    
-                                        <tr v-for="entry in entries">
-                                            <td>{{entry.systolicBP}}</td>
-                                            <td>{{entry.diastolicBP}}</td>
-                                            <td>{{entry.date}}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <table id="datatable" class="table table-striped" style="width:100%"></table>
                             </div>
                         </div>
                     </div>
@@ -243,13 +218,13 @@
     firebase.initializeApp(firebaseConfig);
     var database = firebase.database();
 
-    new DataTable('#datatable');
-        
+    var table;
+
     const app = Vue.createApp({
         data() {
             return {
                 currentUser: null,
-                entries:[],
+                entries: [],
                 systolicBP: "",
                 diastolicBP: "",
                 date: "",
@@ -264,8 +239,11 @@
                     diastolicBP: this.diastolicBP,
                     date: this.date,
                 });
-                this.getEntries();
-                console.log("Entry sent");
+                table.row.add([this.date, this.diastolicBP, this.systolicBP]).draw();
+                //Clear input fields
+                this.systolicBP = "";
+                this.diastolicBP = "";
+                this.date = "";
             },
             logout() {
                 localStorage.removeItem("user");
@@ -274,13 +252,31 @@
             async getEntries() {
                 var ref = database.ref("users/" + this.currentUser.userKey + "/entries");
                 let snapshot = await ref.once('value')
-                this.entries = snapshot.val();                
+                this.entries = snapshot.val();
+
+                //Convert entries to array in order to use DataTable
+                let entriesArr = Object.values(this.entries);
+                let valuesArr = [];
+                for (let entry of entriesArr) {
+                    valuesArr.push(Object.values(entry));
+                }
+
+                //Create Table
+                table = new DataTable('#datatable', {
+                    columns: [
+                        { title: 'Entry Date' },
+                        { title: 'Diastolic Blood Pressure' },
+                        { title: 'Systolic Blood Pressure' },
+                    ],
+                    data: valuesArr
+                });
+
+
             }
         },
         created() {
             this.currentUser = JSON.parse(localStorage.getItem("user"));
-            console.log("user: ", this.currentUser);
-            this.getEntries()
+            this.getEntries();
         },
     });
 
