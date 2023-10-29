@@ -2,158 +2,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Find Nearest Polyclinic</title>
-  <style>
-    /* Set the size of the map container */
-    #map {
-      height: 400px;
-      width: 100%;
-    }
-  </style>
-
+  <title>Find Nearest Clinic</title>
+  <link rel="stylesheet" type="text/css" href="./style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" 
+  integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
-  <!-- Button to find nearest polyclinic -->
-  <button onclick="findNearestPolyclinic()">Find Nearest Polyclinic</button>
 
-  <!-- Map container -->
-  <div id="map"></div>
-  <div id="directionsPanel"></div>
+  <div id="container">
+    <div id="map"></div>
+    <div id="directionsPanel"></div>
+    <button style="background-color: lightgreen; color: white;" onclick="findNearestClinic()">Find Nearest Clinic</button>
+    <select name="travelMode" id="travelMode">
+      <option value="DRIVING">Driving</option>
+      <option value="TRANSIT">Public Transport</option>
+      <option value="WALKING">Walking</option>
+    </select>
+  </div>
   
-  <script>
-    var map;
-    var directionsService;
-    var directionsDisplay;
-    var markers = [];
+  <script src="./script.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFtaTy4IH89MAJwdPPaG35_4t3jPbiVN8&callback=initMap" async defer></script>
 
-    function initMap() {
-      // Initialize the map
-      map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 1.2963, lng: 103.8502 }, // Default center (e.g., SMU)
-        zoom: 15,
-      });
-
-      // Initialize the Directions Service and Display
-      directionsService = new google.maps.DirectionsService();
-      directionsDisplay = new google.maps.DirectionsRenderer();
-      directionsDisplay.setMap(map);
-      directionsDisplay.setPanel(document.getElementById("directionsPanel"));
-    }
-
-    function findNearestPolyclinic() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-          var userLocation = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          console.log(userLocation);
-          map.setCenter(userLocation);
-          clearMarkers();
-          calculateNearestPolyclinic(userLocation);
-        }, function() {
-          alert('Geolocation service failed. Please enable location services in your browser.');
-        });
-      } else {
-        alert('Geolocation is not supported by your browser.');
-      }
-    }
-
-    function calculateNearestPolyclinic(userLocation) {
-      // Simulated polyclinic data (replace with your actual polyclinic data)
-      var polyclinics = [
-        // Polyclinic data here
-        { name: 'AMK Polyclinic', lat: 1.3744, lng: 103.8458 },
-        { name: 'Geylang Polyclinic', lat: 1.3193, lng: 103.8873 }, 
-        { name: 'Hougang Polyclinic', lat: 1.3698, lng: 103.8892 },
-        { name: 'Kallang Polyclinic', lat: 1.3167, lng: 103.8587 },
-        { name: 'Toa Payoh Polyclinic', lat: 1.3346, lng: 103.8589 },
-        { name: 'Woodlands Polyclinic', lat: 1.4308, lng: 103.7751},
-        { name: 'Yishun Polyclinic', lat: 1.4304, lng: 103.8391},
-        { name: 'Bedok Polyclinic', lat: 	1.3269, lng: 103.9320},
-        { name: 'Bukit Merah Polyclinic', lat: 1.2883, lng: 103.8412},
-        { name: 'Eunos Polyclinic', lat: 1.3174, lng: 103.9058},
-        { name: 'Marine Parade Polyclinic', lat: 1.3024, lng: 103.9077},
-        { name: 'Outram Polyclinic', lat: 1.2797, lng: 103.8382},
-        { name: 'Pasir Ris Polyclinic', lat: 1.3685, lng: 103.9594},
-        { name: 'Punggol Polyclinic', lat: 1.4027, lng: 103.9128},
-        { name: 'Sengkang Polyclinic', lat: 1.3927, lng: 103.8943},
-        { name: 'Tampines Polyclinic', lat: 1.3573, lng: 103.9459},
-        { name: 'Tampines North Polyclinic', lat: 1.3631, lng: 103.9377},
-        { name: 'Bukit Batok Polyclinic', lat: 1.3520, lng: 103.7479},
-        { name: 'Bukit Panjang Polyclinic', lat: 1.3830, lng: 103.7598},
-        { name: 'Chua Chu Kang Polyclinic', lat: 1.3822, lng: 103.7509},
-        { name: 'Clementi Polyclinic', lat: 1.3128, lng: 103.7657},
-        { name: 'Jurong Polyclinic', lat: 1.3498, lng: 103.7306},
-        { name: 'Pioneer Polyclinic', lat: 1.3386, lng: 103.6990},
-        { name: 'Queenstown Polyclinic', lat: 1.2985, lng: 103.80109}
-      ];
-
-      var nearestPolyclinic;
-      var nearestDistance = Number.MAX_VALUE;
-
-      polyclinics.forEach(function(polyclinic) {
-        var distance = haversineDistance(userLocation, polyclinic);
-        if (distance < nearestDistance) {
-          nearestDistance = distance;
-          nearestPolyclinic = polyclinic;
-        }
-        var marker = new google.maps.Marker({
-          map: map,
-          position: { lat: polyclinic.lat, lng: polyclinic.lng },
-          title: polyclinic.name,
-        });
-        markers.push(marker);
-      });
-      console.log(nearestPolyclinic)
-      // Display the route to the nearest polyclinic
-      calculateAndDisplayRoute(userLocation, nearestPolyclinic);
-    }
-
-    function haversineDistance(point1, point2) {
-      // Calculate the distance between two points using the Haversine formula
-      var lat1 = point1.lat;
-      var lon1 = point1.lng;
-      var lat2 = point2.lat;
-      var lon2 = point2.lng;
-      var R = 6371; // Radius of the Earth in kilometers
-      var dLat = (lat2 - lat1) * (Math.PI / 180);
-      var dLon = (lon2 - lon1) * (Math.PI / 180);
-      var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      var distance = R * c;
-      return distance;
-    }
-
-    function calculateAndDisplayRoute(origin, destination) {
-      var request = {
-        origin: origin,
-        destination: destination,
-        travelMode: google.maps.TravelMode.TRANSIT
-      };
-      console.log(request);
-
-      directionsService.route(request, function(result, status) {
-        console.log(result);
-        console.log(status);
-        if (status == google.maps.DirectionsStatus.OK) {
-          directionsDisplay.setDirections(result);
-        } else {
-          alert('Directions request failed due to ' + status);
-        }
-      });
-    }
-
-    function clearMarkers() {
-      markers.forEach(function(marker) {
-        marker.setMap(null);
-      });
-      markers = [];
-      directionsDisplay.setMap(null);
-    }
-  </script>
-
-  <!-- Include the Google Maps API script with your API key -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIkO6mQjvyODa0h1w0xCgr5Z-ZofMRPok&callback=initMap" async defer></script>
 </body>
 </html>
