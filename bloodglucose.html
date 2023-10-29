@@ -164,10 +164,31 @@
                             </div>
                         </div>
 
-                        <h1 class="mt-4">Blood Pressure Readings</h1>
+                        <h1 class="mt-4">Blood glucose Readings</h1>
                         <div class="card mb-4">
                             <div class="card-body">
                                 <table id="datatable" class="table table-striped" style="width:100%"></table>
+                                <!-- <table id="datatable" class="display" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Blood glucose level (mg/dl)</th>
+                                            <th>Entry Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody> -->
+                                <!-- DataTable rows are created as you did before, including the unique indexes in data-index attribute -->
+                                <!-- <tr v-for="(value, key) in valuesArr" :key="index">
+                                            <td>{{ value[0] }}</td>
+                                            <td>{{ value[1]] }}</td>
+                                            <td>
+                                                <button @click="delete(key)" class="delete-button" :data-index="index">Delete</button>
+                                            </td>
+                                        </tr> -->
+                                <!-- Add more rows as needed -->
+                                <!-- </tbody>
+                                </table> -->
+
                             </div>
                         </div>
                     </div>
@@ -211,7 +232,7 @@
     var database = firebase.database();
 
     var table;
-
+    var key = "";
     const app = Vue.createApp({
         data() {
             return {
@@ -219,6 +240,8 @@
                 entries: [],
                 bgLevel: "",
                 date: "",
+                recordKeys: "",
+                valuesArr: "",
             }
         },
         methods: {
@@ -238,6 +261,7 @@
                 localStorage.removeItem("user");
                 window.location.href = "login.html";
             },
+       
             async getEntries() {
                 var ref = database.ref("users/" + this.currentUser.userKey + "/bgEntries");
                 let snapshot = await ref.once('value')
@@ -246,19 +270,40 @@
                 //Convert entries to array in order to use DataTable
                 let entriesArr = Object.values(this.entries);
                 let valuesArr = [];
+
                 for (let entry of entriesArr) {
                     valuesArr.push(Object.values(entry));
                 }
+                this.recordKeys = Object.keys(this.entries);
+                this.valuesArr = valuesArr;
+                key = this.recordKeys;
+                // console.log("entriesArr" + entriesArr);
+                // console.log(this.recordKeys);
+                // console.log(this.valuesArr);
 
                 //Create Table
                 table = new DataTable('#datatable', {
                     columns: [
                         { title: 'Blood glucose level (mg/dl)' },
                         { title: 'Entry Date' },
+                        { title: "Action" },
                     ],
-                    data: valuesArr
+                    data: valuesArr,
+                    columnDefs: [
+                        {
+                            targets: -1, // Target the last column (Action)
+                            data: null,
+                            render: function (data, type, row, meta) {
+                                // Use meta.row to get the row index and create a unique index
+                                var rowIndex = meta.row;
+
+                                // Create a delete button with a unique index
+                                return '<button class="delete-button" data-index="' + rowIndex + '" v-on:click = "delete()">Delete</button>';
+                            }
+                        },
+                    ],
                 });
-               
+
 
             }
         },
@@ -266,9 +311,48 @@
             this.currentUser = JSON.parse(localStorage.getItem("user"));
             this.getEntries();
         },
+
+
     });
 
     const vm = app.mount("#app")
+    
 
 
+
+    
+    
+    let entries = [];
+    let recordKeys = [];
+    let currentUser = JSON.parse(localStorage.getItem("user"));
+    console.log(currentUser);
+    async function getEntries(index){
+        var ref = database.ref('users/' + currentUser.userKey + '/bgEntries');
+        let snapshot = await ref.once('value');
+        entries = snapshot.val();
+        recordKeys = Object.keys(entries); //recordkeys only exist in here 
+        console.log(recordKeys[0]);
+        let rKey = recordKeys[index];
+        let recordRef =  database.ref('users/' + currentUser.userKey + '/bgEntries/' + rKey);
+        recordRef.remove()
+            .then(() => {
+                console.log('Record deleted successfully.');
+            })
+            .catch(error => {
+                console.error('Error deleting record:', error);
+            });
+    }
+   
+
+    // function to delete row
+    $(document).ready(function () {
+        $('#datatable').on('click', '.delete-button', function () {
+            var index = $(this).data('index');
+            // console.log('Clicked on delete button at index ' + index);
+            getEntries(index);
+            var row = table.row($(this).parents('tr'));
+            row.remove().draw();
+        });
+    });
+   
 </script>
