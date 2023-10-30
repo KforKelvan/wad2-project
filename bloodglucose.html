@@ -22,6 +22,8 @@
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-database-compat.js"></script>
+    <!-- icons  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 
 </head>
 
@@ -168,27 +170,7 @@
                         <div class="card mb-4">
                             <div class="card-body">
                                 <table id="datatable" class="table table-striped" style="width:100%"></table>
-                                <!-- <table id="datatable" class="display" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>Blood glucose level (mg/dl)</th>
-                                            <th>Entry Date</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody> -->
-                                <!-- DataTable rows are created as you did before, including the unique indexes in data-index attribute -->
-                                <!-- <tr v-for="(value, key) in valuesArr" :key="index">
-                                            <td>{{ value[0] }}</td>
-                                            <td>{{ value[1]] }}</td>
-                                            <td>
-                                                <button @click="delete(key)" class="delete-button" :data-index="index">Delete</button>
-                                            </td>
-                                        </tr> -->
-                                <!-- Add more rows as needed -->
-                                <!-- </tbody>
-                                </table> -->
-
+                                
                             </div>
                         </div>
                     </div>
@@ -232,7 +214,7 @@
     var database = firebase.database();
 
     var table;
-    var key = "";
+    
     const app = Vue.createApp({
         data() {
             return {
@@ -240,8 +222,7 @@
                 entries: [],
                 bgLevel: "",
                 date: "",
-                recordKeys: "",
-                valuesArr: "",
+
             }
         },
         methods: {
@@ -274,12 +255,8 @@
                 for (let entry of entriesArr) {
                     valuesArr.push(Object.values(entry));
                 }
-                this.recordKeys = Object.keys(this.entries);
-                this.valuesArr = valuesArr;
-                key = this.recordKeys;
-                // console.log("entriesArr" + entriesArr);
-                // console.log(this.recordKeys);
-                // console.log(this.valuesArr);
+            
+                
 
                 //Create Table
                 table = new DataTable('#datatable', {
@@ -298,7 +275,7 @@
                                 var rowIndex = meta.row;
 
                                 // Create a delete button with a unique index
-                                return '<button class="delete-button" data-index="' + rowIndex + '" v-on:click = "delete()">Delete</button>';
+                                return '<button class="delete-button" data-index="' + rowIndex + '"><i class="fas fa-trash-alt"></i></button>';
                             }
                         },
                     ],
@@ -329,7 +306,7 @@
     async function getEntries(index){
         var ref = database.ref('users/' + currentUser.userKey + '/bgEntries');
         let snapshot = await ref.once('value');
-        entries = snapshot.val();
+        entries = snapshot. val();
         recordKeys = Object.keys(entries); //recordkeys only exist in here 
         console.log(recordKeys[0]);
         let rKey = recordKeys[index];
