@@ -12,15 +12,33 @@
 <body class="sb-nav-fixed sb-sidenav-toggled">
     <div id="app" data-v-app="">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-success">
+            <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="homepage.html">HealthBuddy</a>
-            <div class="collapse navbar-collapse" id="navbarNav"></div>
-                
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Tracker</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Map</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Forum</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item">
-                    <a class="nav-link" href="login.html">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="register.html">Register</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    </ul>
                 </li>
             </ul>
         </nav>        
