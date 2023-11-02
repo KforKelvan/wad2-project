@@ -16,6 +16,9 @@ function initMap() {
 }
 
 function findNearestClinic() {
+  var clinicType = document.getElementById("clinicType").value;
+  console.log(clinicType);
+
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       var userLocation = {
@@ -27,7 +30,7 @@ function findNearestClinic() {
       createMarkerAtCurrentLocation(userLocation);
       map.setCenter(userLocation);
       clearMarkers();
-      calculateNearestClinic(userLocation);
+      calculateNearestClinic(userLocation, clinicType);
     }, function() {
       alert('Geolocation service failed. Please enable location services in your browser.');
     });
@@ -45,8 +48,9 @@ function createMarkerAtCurrentLocation(userLocation) {
   });
 }
 
-function calculateNearestClinic(userLocation) {
+function calculateNearestClinic(userLocation, clinicType) {
 
+  console.log(clinicType);
   var polyclinics = [
     { name: 'AMK Polyclinic', lat: 1.3744, lng: 103.8458 },
     { name: 'Geylang Polyclinic', lat: 1.3193, lng: 103.8873 }, 
@@ -91,13 +95,33 @@ function calculateNearestClinic(userLocation) {
   var nearestClinic;
   var nearestDistance = Number.MAX_VALUE;
 
-  clinics.forEach(function(clinic) {
-    var distance = haversineDistance(userLocation, clinic);
-    if (distance < nearestDistance) {
-      nearestDistance = distance;
-      nearestClinic = clinic;
-    }
-  })
+  if (clinicType == "both") {
+    clinics.forEach(function(clinic) {
+      var distance = haversineDistance(userLocation, clinic);
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearestClinic = clinic;
+      }
+    })
+  }
+  else if (clinicType == "polyclinic") {
+    polyclinics.forEach(function(polyclinic) {
+      var distance = haversineDistance(userLocation, polyclinic);
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearestClinic = polyclinic;
+      }
+    })
+  }
+  else {
+    hospitals.forEach(function(hospital) {
+      var distance = haversineDistance(userLocation, hospital);
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearestClinic = hospital;
+      }
+    })
+  }
 
   polyclinics.forEach(function(polyclinic) {
     var polyclinicMarker = new google.maps.Marker({
@@ -127,7 +151,7 @@ function calculateNearestClinic(userLocation) {
   });
 
   console.log(nearestClinic)
-  calculateAndDisplayRoute(userLocation, nearestClinic, directionsService, directionsDisplay);
+  calculateAndDisplayRoute(userLocation, nearestClinic);
 }
 
 function haversineDistance(point1, point2) {
@@ -144,7 +168,7 @@ function haversineDistance(point1, point2) {
   return distance;
 }
 
-function calculateAndDisplayRoute(origin, destination, directionsService, directionsDisplay) {
+function calculateAndDisplayRoute(origin, destination) {
     var travelMode = document.getElementById("travelMode").value;
     var request = {
         origin: origin,
