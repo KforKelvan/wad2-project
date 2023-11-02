@@ -42,7 +42,10 @@
     
                 <div class="card-body">
                     <h5 class="card-title">{{post.postSubject}}</h5>
-                    <p class="card-text">{{relativeDate(currentDate, post.postDate)}}</p>
+                    <div class="d-flex align-items-center">
+                        <div class="me-2">{{relativeDate(currentDate, post.postDate)}}</div>
+                        <div class="me-2">{{post.postUserName}}</div>
+                    </div>
                     <p class="card-text">{{post.postContent}}</p>
                     <div class="d-flex align-items-center">
                         <div class="me-1">{{post.postLikes.length - 1}}</div>
@@ -68,7 +71,10 @@
     
                 <div class="card-body">
                     <h5 class="card-title">{{posts[postOpened].postSubject}}</h5>
-                    <p class="card-text">{{relativeDate(currentDate, posts[postOpened].postDate)}}</p>
+                    <div class="d-flex align-items-center">
+                        <div class="me-2">{{relativeDate(currentDate, posts[postOpened].postDate)}}</div>
+                        <div class="me-2">{{posts[postOpened].postUserName}}</div>
+                    </div>
                     <p class="card-text">{{posts[postOpened].postContent}}</p>
                     <div class="d-flex align-items-center mb-4">
                         <div class="me-2">{{posts[postOpened].postLikes.length - 1}}</div>
@@ -153,6 +159,7 @@
                             newPostSubject: "",
                             newPostContent: "",
                             newReplyContent: "",
+                            usersArr: [],
                         }
                         
                     },
@@ -161,8 +168,6 @@
                         this.getAllPosts();
                         this.getAllUsers();
                         this.currentDate = this.today.getFullYear()+'-'+(this.today.getMonth()+1)+'-'+this.today.getDate();
-                    
-            
                     },
 
                     methods:{
@@ -300,12 +305,14 @@
                             newPostRef.set({
                                 postId: newPostRef.key,
                                 postUserId: this.currentUser.userKey,
+                                postUserName: this.currentUser.fName + " " + this.currentUser.lName,
                                 postDate: this.currentDate,
                                 postTopic: this.newPostTopic,
                                 postSubject: this.newPostSubject,
                                 postContent: this.newPostContent,
                                 postLikes: ["ignore"],
                                 postReplies: ["ignore"],
+                                
                             });
                             this.newPostTopic = "";
                             this.newPostSubject = "";
