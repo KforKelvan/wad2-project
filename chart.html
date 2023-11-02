@@ -12,18 +12,11 @@
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Vue -->
     <script src="https://unpkg.com/vue@next"></script>
-    <!-- DataTable-->
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
-        rel="stylesheet" />
-    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <!-- chartjs-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-database-compat.js"></script>
-    <!-- icons  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 
 </head>
 
@@ -81,7 +74,7 @@
                                 data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="bloodglucose.html">Blood glucose tracker</a>
-                                    <a class="nav-link" href="bloodpressure.html">Blood pressure tracker</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
@@ -141,61 +134,79 @@
                 </nav>
             </div>
             <div id="layoutSidenav_content">
-                <main>
+                <main> <!--the main page starts here-->
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Enter blood pressure reading</h1>
+                        <h1 class="mt-4">Enter new reading</h1>
                         <div class="card mb-4">
                             <div class="card-body">
                                 <div class="row mb-3">
                                     <div class="col">
-                                        <div class="form-floating mb-3 mb-md-0">
-                                            <input class="form-control" id="date" type="date" placeholder=""
+                                        <div class="form-floating mb-3 mb-md-0" id = "canva">
+                                            <!-- <input class="form-control" id="date" type="date" placeholder=""
                                                 v-model="date" />
-                                            <label for="date">Entry date</label>
+                                            <label for="date">Entry date</label> -->
+                                            <input type="text" v-model = "year" placeholder="YYYY">
+                                            <select v-model = "month">
+                                                <option value="0">Jan</option>
+                                                <option value="1">Feb</option>
+                                                <option value="2">Mar</option>
+                                                <option value="3">Apr</option>
+                                                <option value="4">May</option>
+                                                <option value="5">Jun</option>
+                                                <option value="6">Jul</option>
+                                                <option value="7">Aug</option>
+                                                <option value="8">Sep</option>
+                                                <option value="9">Oct</option>
+                                                <option value="10">Nov</option>
+                                                <option value="11">Dec</option>
+                                            </select>
+                                            <button v-on:click = "filter()">Filter</button>
+                                            <button v-on:click = "reset()">Reset</button>
+                                            <canvas id="lineChart"></canvas>
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <div class="form-floating mb-3 mb-md-0">
+                                        <!-- <div class="form-floating mb-3 mb-md-0">
                                             <input class="form-control" id="diastolicBP" type="text" placeholder=""
                                                 v-model="diastolicBP" />
                                             <label for="diastolicBP">Diastolic Blood Pressure</label>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div class="col">
-                                        <div class="form-floating mb-3 mb-md-0">
+                                        <!-- <div class="form-floating mb-3 mb-md-0">
                                             <input class="form-control" id="systolicBP" type="text" placeholder=""
                                                 v-model="systolicBP" />
-                                            <label for="systolicBP">Systolic Blood Pressure</label>
-                                        </div>
+                                            <label for="systolicBP">Systolic Blood Pressure</label> -->
                                     </div>
-
                                 </div>
-                                <button class="btn btn-primary" @click="submitEntry()">Submit</button>
-                            </div>
-                        </div>
 
-                        <h1 class="mt-4">Blood Pressure Readings</h1>
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <table id="datatable" class="table table-striped" style="width:100%"></table>
                             </div>
+                            <!-- <button class="btn btn-primary" @click="submitEntry()">Submit</button> -->
+                        </div>
+                    </div>
+
+                    <h1 class="mt-4">Blood Pressure Readings</h1>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <!-- <table id="datatable" class="table table-striped" style="width:100%"></table> -->
                         </div>
                     </div>
             </div>
         </div>
-        </main>
-        <footer class="py-4 bg-light mt-auto">
-            <div class="container-fluid px-4">
-                <div class="d-flex align-items-center justify-content-between small">
-                    <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                    <div>
-                        <a href="#">Privacy Policy</a>
-                        &middot;
-                        <a href="#">Terms &amp; Conditions</a>
-                    </div>
+    </div>
+    </main>
+    <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid px-4">
+            <div class="d-flex align-items-center justify-content-between small">
+                <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                <div>
+                    <a href="#">Privacy Policy</a>
+                    &middot;
+                    <a href="#">Terms &amp; Conditions</a>
                 </div>
             </div>
-        </footer>
+        </div>
+    </footer>
     </div>
 </body>
 
@@ -226,67 +237,133 @@
         data() {
             return {
                 currentUser: null,
-                entries: [],
-                systolicBP: "",
-                diastolicBP: "",
-                date: "",
+                month: "",
+                year: "",
             }
         },
         methods: {
-            async submitEntry() {
-                var userRef = database.ref('users/' + this.currentUser.userKey + '/entries');
-                var newEntryRef = userRef.push();
-                await newEntryRef.set({
-                    systolicBP: this.systolicBP,
-                    diastolicBP: this.diastolicBP,
-                    date: this.date,
-                });
-                table.row.add([this.date, this.diastolicBP, this.systolicBP]).draw();
-                //Clear input fields
-                this.systolicBP = "";
-                this.diastolicBP = "";
-                this.date = "";
-            },
             logout() {
                 localStorage.removeItem("user");
                 window.location.href = "login.html";
             },
-            async getEntries() {
-                var ref = database.ref("users/" + this.currentUser.userKey + "/entries");
+            async reset(){
+                var ref = database.ref("users/" + this.currentUser.userKey + "/bgEntries");
                 let snapshot = await ref.once('value')
                 this.entries = snapshot.val();
 
                 //Convert entries to array in order to use DataTable
                 let entriesArr = Object.values(this.entries);
-                let valuesArr = [];
-                for (let entry of entriesArr) {
-                    valuesArr.push(Object.values(entry));
+                let dates = [];
+                let bgRecords = [];
+                console.log(entriesArr);
+                for (entry in entriesArr) {
+                    // console.log(entriesArr[entry]);
+                    var rec = entriesArr[entry]
+                    dates.push(rec.date)
+                    bgRecords.push(rec.bgLevel)
                 }
-                
-                //Create Table
-                table = new DataTable('#datatable', {
-                    columns: [
-                        { title: 'Entry Date' },
-                        { title: 'Diastolic Blood Pressure' },
-                        { title: 'Systolic Blood Pressure' },
-                        { title: "action"},
-                    ],
-                    data: valuesArr,
-                    columnDefs: [
+                // console.log(bgRecords);
+                var chartData = {
+                    labels: dates, // X-axis labels
+                    datasets: [
                         {
-                            targets: -1, // Target the last column (Action)
-                            data: null,
-                            render: function (data, type, row, meta) {
-                                // Use meta.row to get the row index and create a unique index
-                                var rowIndex = meta.row;
-
-                                // Create a delete button with a unique index
-                                return '<button class="delete-button" data-index="' + rowIndex + '"><i class="fas fa-trash-alt"></i></button>';
-                            }
+                            label: "Data Series",
+                            data: bgRecords, // Your data points
+                            borderColor: "rgb(75, 192, 192)",
+                            fill: false,
                         },
                     ],
+                };
+                document.getElementById("lineChart").remove()
+                let parentEle = document.getElementById('canva');
+                let ele = document.createElement("canvas");
+                ele.setAttribute("id", "lineChart");
+                parentEle.appendChild(ele);
+                var ctx = document.getElementById("lineChart").getContext("2d");
+                var lineChart = new Chart(ctx, {
+                    type: "line",
+                    data: chartData,
                 });
+            },
+            async filter(){
+                var ref = database.ref("users/" + this.currentUser.userKey + "/bgEntries");
+                let snapshot = await ref.once('value')
+                this.entries = snapshot.val();
 
+                //Convert entries to array in order to use DataTable
+                let entriesArr = Object.values(this.entries);
+                let dates = [];
+                let bgRecords = [];
+                console.log(entriesArr);
+                for (entry in entriesArr) {
+                    // console.log(entriesArr[entry]);
+                    var rec = entriesArr[entry];
+                    let month = new Date(rec.date).getMonth();
+                    let year = new Date(rec.date).getFullYear();
+                    // console.log(month, year);
+                    if (year == this.year && month == this.month){
+                        dates.push(rec.date)
+                        bgRecords.push(rec.bgLevel)
+                    }
+                }
+                var chartData = {
+                    labels: dates, // X-axis labels
+                    datasets: [
+                        {
+                            label: "Data Series",
+                            data: bgRecords, // Your data points
+                            borderColor: "rgb(75, 192, 192)",
+                            fill: false,
+                        },
+                    ],
+                };
+                
+                document.getElementById("lineChart").remove()
+                let parentEle = document.getElementById('canva');
+                let ele = document.createElement("canvas");
+                ele.setAttribute("id", "lineChart");
+                parentEle.appendChild(ele);
+                var ctx = document.getElementById("lineChart").getContext("2d");
+                var lineChart = new Chart(ctx, {
+                    type: "line",
+                    data: chartData,
+                });
+            
+                
+            },
+            async getEntries() {
+                var ref = database.ref("users/" + this.currentUser.userKey + "/bgEntries");
+                let snapshot = await ref.once('value')
+                this.entries = snapshot.val();
+
+                //Convert entries to array in order to use DataTable
+                let entriesArr = Object.values(this.entries);
+                let dates = [];
+                let bgRecords = [];
+                console.log(entriesArr);
+                for (entry in entriesArr) {
+                    // console.log(entriesArr[entry]);
+                    var rec = entriesArr[entry]
+                    dates.push(rec.date)
+                    bgRecords.push(rec.bgLevel)
+                }
+                // console.log(bgRecords);
+                var chartData = {
+                    labels: dates, // X-axis labels
+                    datasets: [
+                        {
+                            label: "Data Series",
+                            data: bgRecords, // Your data points
+                            borderColor: "rgb(75, 192, 192)",
+                            fill: false,
+                        },
+                    ],
+                };
+                var ctx = document.getElementById("lineChart").getContext("2d");
+                var lineChart = new Chart(ctx, {
+                    type: "line",
+                    data: chartData,
+                });
 
             }
         },
@@ -298,37 +375,41 @@
 
     const vm = app.mount("#app")
 
-    let entries = [];
-    let recordKeys = [];
-    let currentUser = JSON.parse(localStorage.getItem("user"));
-    console.log(currentUser);
-    async function getEntries(index){
-        var ref = database.ref('users/' + currentUser.userKey + '/entries');
-        let snapshot = await ref.once('value');
-        entries = snapshot. val();
-        recordKeys = Object.keys(entries); //recordkeys only exist in here 
-        console.log(recordKeys[0]);
-        let rKey = recordKeys[index];
-        let recordRef =  database.ref('users/' + currentUser.userKey + '/entries/' + rKey);
-        recordRef.remove()
-            .then(() => {
-                console.log('Record deleted successfully.');
-            })
-            .catch(error => {
-                console.error('Error deleting record:', error);
-            });
-    }
-   
+    // var currentUser = JSON.parse(localStorage.getItem("user"));
+    // var dataRef = database.ref("users/" + currentUser.userKey + "/bgEntries" );
 
-    // function to delete row
-    $(document).ready(function () {
-        $('#datatable').on('click', '.delete-button', function () {
-            var index = $(this).data('index');
-            // console.log('Clicked on delete button at index ' + index);
-            getEntries(index);
-            var row = table.row($(this).parents('tr'));
-            row.remove().draw();
-        });
-    });
+    // dataRef.on("value", function (snapshot) {
+    //     var data = snapshot.val(); // This should be an array or object containing your data.
+    //     // Call a function to render the chart with the data.
+    //     renderLineChart(data);
+    // });
+
+
+    // function trenderLineChart(data) {
+    //     // Extract data as needed from 'data' retrieved from Firebase.
+    //     var entriesArr = Object.values(data);
+    //     // Define your data in Chart.js format.
+    //     let label = ["1", "2"];
+    //     var chartData = {
+    //         labels: ["Label1", "Label2", "Label3"], // X-axis labels
+    //         datasets: [
+    //             {
+    //                 label: "Data Series",
+    //                 data: [dataPoint1, dataPoint2, dataPoint3], // Your data points
+    //                 borderColor: "rgb(75, 192, 192)",
+    //                 fill: false,
+    //             },
+    //         ],
+    //     };
+
+    //     // Create a line chart.
+    //     var ctx = document.getElementById("lineChart").getContext("2d");
+    //     var lineChart = new Chart(ctx, {
+    //         type: "line",
+    //         data: chartData,
+    //     });
+    // }
+
+
 
 </script>

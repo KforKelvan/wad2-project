@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>My Blood Pressure Rising</title>
+    <title>Set Alert</title>
     <link href="bootstrap/css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Vue -->
@@ -24,6 +24,11 @@
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-database-compat.js"></script>
     <!-- icons  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--moment-->
+    <script src="https://momentjs.com/downloads/moment.js"></script>
+
 
 </head>
 
@@ -80,8 +85,8 @@
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
                                 data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="bloodglucose.html">Blood glucose tracker</a>
-                                    <a class="nav-link" href="bloodpressure.html">Blood pressure tracker</a>
+                                    <a class="nav-link" href="layout-static.html">Static Navigation</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
@@ -143,41 +148,41 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Enter blood pressure reading</h1>
+                        <h1 class="mt-4">Enter Alert Timing</h1>
                         <div class="card mb-4">
                             <div class="card-body">
                                 <div class="row mb-3">
                                     <div class="col">
                                         <div class="form-floating mb-3 mb-md-0">
-                                            <input class="form-control" id="date" type="date" placeholder=""
-                                                v-model="date" />
-                                            <label for="date">Entry date</label>
+                                            <input class="form-control" id="Msg" type="text" placeholder=""
+                                                v-model="Msg" />
+                                            <label for="Msg">Message</label>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-floating mb-3 mb-md-0">
-                                            <input class="form-control" id="diastolicBP" type="text" placeholder=""
-                                                v-model="diastolicBP" />
-                                            <label for="diastolicBP">Diastolic Blood Pressure</label>
+                                            <input class="form-control" id="TeleID" type="text" placeholder=""
+                                                v-model="TeleID" />
+                                            <label for="TeleID">Telegram ID</label>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-floating mb-3 mb-md-0">
-                                            <input class="form-control" id="systolicBP" type="text" placeholder=""
-                                                v-model="systolicBP" />
-                                            <label for="systolicBP">Systolic Blood Pressure</label>
+                                            <input class="form-control" id="datetime" type="datetime-local" placeholder=""
+                                                v-model="datetime"/>
+                                            <label for="date">Date & Time of Alert</label>
                                         </div>
-                                    </div>
-
+                                    </div> 
                                 </div>
                                 <button class="btn btn-primary" @click="submitEntry()">Submit</button>
                             </div>
                         </div>
 
-                        <h1 class="mt-4">Blood Pressure Readings</h1>
+                        <h1 class="mt-4">Your Alerts</h1>
                         <div class="card mb-4">
                             <div class="card-body">
                                 <table id="datatable" class="table table-striped" style="width:100%"></table>
+                                
                             </div>
                         </div>
                     </div>
@@ -221,55 +226,58 @@
     var database = firebase.database();
 
     var table;
-
+    
     const app = Vue.createApp({
         data() {
             return {
                 currentUser: null,
                 entries: [],
-                systolicBP: "",
-                diastolicBP: "",
-                date: "",
+                datetime: "",
+                TeleID: "",
+                Msg:""
             }
         },
         methods: {
             async submitEntry() {
-                var userRef = database.ref('users/' + this.currentUser.userKey + '/entries');
+                var userRef = database.ref('alerts/' + this.currentUser.userKey + '/alertEntries');
                 var newEntryRef = userRef.push();
                 await newEntryRef.set({
-                    systolicBP: this.systolicBP,
-                    diastolicBP: this.diastolicBP,
-                    date: this.date,
+                    Msg: this.Msg,
+                    TeleID: this.TeleID,
+                    // datetime: (this.datetime).replace("T"," "),
+                    datetime: this.datetime,
                 });
-                table.row.add([this.date, this.diastolicBP, this.systolicBP]).draw();
+                table.row.add([this.Msg, this.TeleID, this.datetime]).draw(); //adding a row in datatable 
                 //Clear input fields
-                this.systolicBP = "";
-                this.diastolicBP = "";
-                this.date = "";
+                this.Msg = "";
+                this.TeleID = "";
+                this.datetime = "";
             },
             logout() {
                 localStorage.removeItem("user");
                 window.location.href = "login.html";
             },
+       
             async getEntries() {
-                var ref = database.ref("users/" + this.currentUser.userKey + "/entries");
+                var ref = database.ref("alerts/" + this.currentUser.userKey + "/alertEntries");
                 let snapshot = await ref.once('value')
                 this.entries = snapshot.val();
 
                 //Convert entries to array in order to use DataTable
                 let entriesArr = Object.values(this.entries);
                 let valuesArr = [];
+
                 for (let entry of entriesArr) {
                     valuesArr.push(Object.values(entry));
-                }
-                
+                }                
+
                 //Create Table
                 table = new DataTable('#datatable', {
                     columns: [
-                        { title: 'Entry Date' },
-                        { title: 'Diastolic Blood Pressure' },
-                        { title: 'Systolic Blood Pressure' },
-                        { title: "action"},
+                        { title: 'Message' },
+                        { title: 'Telegram ID' },
+                        { title: "Date & Time of Alert" },
+                        { title: "Action" },
                     ],
                     data: valuesArr,
                     columnDefs: [
@@ -286,30 +294,35 @@
                         },
                     ],
                 });
-
-
             }
         },
         created() {
             this.currentUser = JSON.parse(localStorage.getItem("user"));
             this.getEntries();
         },
+
+
     });
 
     const vm = app.mount("#app")
+    
 
+
+
+    
+    
     let entries = [];
     let recordKeys = [];
     let currentUser = JSON.parse(localStorage.getItem("user"));
     console.log(currentUser);
     async function getEntries(index){
-        var ref = database.ref('users/' + currentUser.userKey + '/entries');
+        var ref = database.ref('alerts/' + currentUser.userKey + '/alertEntries');
         let snapshot = await ref.once('value');
         entries = snapshot. val();
         recordKeys = Object.keys(entries); //recordkeys only exist in here 
         console.log(recordKeys[0]);
         let rKey = recordKeys[index];
-        let recordRef =  database.ref('users/' + currentUser.userKey + '/entries/' + rKey);
+        let recordRef =  database.ref('alerts/' + currentUser.userKey + '/alertEntries/' + rKey);
         recordRef.remove()
             .then(() => {
                 console.log('Record deleted successfully.');
@@ -318,7 +331,6 @@
                 console.error('Error deleting record:', error);
             });
     }
-   
 
     // function to delete row
     $(document).ready(function () {
@@ -331,4 +343,66 @@
         });
     });
 
+    async function getData() {
+        var ref = database.ref("alerts/" + currentUser.userKey + "/alertEntries");
+        let snapshot = await ref.once('value')
+        entries2 = snapshot.val();
+        let entriesArr = Object.values(entries2);
+        return entriesArr             
+    }
 </script>
+<script>
+    function convertAndFilter(entriesArr) {
+    const entriesArrobj = JSON.parse(JSON.stringify(entriesArr))
+    const now = moment();
+    const previousMinute = now.clone().subtract(1, 'minutes');
+    const currentTime = now;
+    console.log('previousMinute', previousMinute.format());
+    console.log('currentTime', currentTime.format());
+    return entriesArrobj.filter(row => {
+        const scheduleDatetime = moment(row['datetime']);
+        return scheduleDatetime.isAfter(previousMinute) && scheduleDatetime.isBefore(currentTime);
+    });
+    }
+
+    async function sendMessage(row) {
+    const bot_id = "6842993088:AAGqiVSlwx9aaXLAx6Mp1CNblPMUIMqP6bs";
+    const chat_id = row['TeleID'];
+    const message = row['Msg'];
+    const url = `https://api.telegram.org/bot${bot_id}/sendMessage?chat_id=${chat_id}&text=${message}`;
+
+    try {
+        const response = await axios.get(url);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+    }
+
+    async function processData() {
+    try {
+        const data = await getData();
+        const filteredData = convertAndFilter(data);
+        if (filteredData.length > 0) {
+            const statuses = await Promise.all(filteredData.map(sendMessage));
+            console.log(statuses);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+    }
+
+    (async function () {
+    try {
+        while (true) {
+            await processData();
+            console.log('Waiting for 60 seconds...');
+            await new Promise(resolve => setTimeout(resolve, 60000));
+        }
+    } catch (error) {
+        console.error(error);
+    }
+    })();
+</script>
+<!-- <script src="./alert.js"></script> -->
