@@ -7,35 +7,16 @@
 
     <script src="https://unpkg.com/vue@next"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="...PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    integrity="...PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/styles.css">
+
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-database-compat.js"></script>
-
-    <link rel="stylesheet" href="./css/styles.css">
-
-
-    <style>
-        .card.mb-3.all:hover {
-            border: 4px solid #306a56;
-            border-radius: 10px;
-        }
-
-        .searchbar:hover {
-            border: 2px solid #306a56;
-            border-radius: 10px;
-        }
-
-        .custom-width {
-            max-width: 800px
-        }
-
-        .move-bottom {
-            padding-top: 60px;
-        }
-    </style>
 
     <title>Forum</title>
 </head>
@@ -168,10 +149,11 @@
                                         </div>
                                         <div v-if="!inArray(currentUser.userKey, reply.replyLikes)" class="d-inline me-2"
                                             @click="addLikeReply(reply, index)">
-                                            <img src="./assets/img/Like Button.png.png" width="20" height="20">
+                                            <img src="./assets/img/Like Button.png" width="20" height="20">
                                         </div>
-                                        {{relativeDate(currentDate, reply.replyDate)}} {{users[reply.userId].fName}}
-                                        {{users[reply.userId].lName}}<br>
+                                        {{users[reply.userId].fName}}
+                                        {{users[reply.userId].lName}}
+                                        {{relativeDate(currentDate, reply.replyDate)}}<br>
                                         {{reply.replyContent}}
                                     </div>
                                 </div>
@@ -199,10 +181,6 @@
     
 
         </div>
-
-        
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-        integrity="...HUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 
     <script>
 
