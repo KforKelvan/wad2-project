@@ -396,3 +396,8 @@ a {
 .move-bottom {
     padding-top: 60px;
 }
+
+.logo {
+    margin: auto;
+    background-color: white;
+}
