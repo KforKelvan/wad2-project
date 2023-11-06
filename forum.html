@@ -35,6 +35,10 @@
         body {
             background-color: #a8e0c3;
         }
+
+        .move-bottom {
+            padding-top: 60px;
+        }
     </style>
 
     <title>Forum</title>
@@ -88,113 +92,119 @@
             </ul>
         </nav>
 
-        <div class="container custom-width">
+        <div class="move-bottom">
 
-            <div v-if="showPage === 'showAllPostsPage'">
+            <div class="container custom-width">
 
-                <div @click="goCreatePage()">
-                    <div class="input-group mt-3 mb-3 searchbar">
-                        <input type="text" class="form-control" placeholder="Make a post!">
-                        <button class="btn btn-success">Post</button>
-                    </div>
-                </div>
-
-                <div v-for="post in posts" class="card mb-3 all" @click="openPost(post.postId)">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <div class="me-2">{{post.postTopic}}</div>
-                            <div class="me-2">Posted by {{post.postUserName}}</div>
-                            <div class="me-2">{{relativeDate(currentDate, post.postDate)}}</div>
+                <div v-if="showPage === 'showAllPostsPage'">
+    
+                    <div @click="goCreatePage()">
+                        <div class="input-group mt-3 mb-3 searchbar">
+                            <input type="text" class="form-control" placeholder="Make a post!">
+                            <button class="btn btn-success">Post</button>
                         </div>
                     </div>
-
-                    <div class="card-body">
-                        <h5 class="card-title">{{post.postSubject}}</h5>
-                        <p class="card-text">{{post.postContent}}</p>
-                        <div class="d-flex align-items-center">
-                            <div class="me-1">{{post.postLikes.length - 1}}</div>
-                            <div class="me-2">Likes</div>
-                            <div class="me-1">{{post.postReplies.length - 1}}</div>
-                            <div class="me-2">Replies</div>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div v-if="showPage === 'showPostPage'">
-                <button @click="browse()">Browse</button>
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <div class="me-2">{{posts[postOpened].postTopic}}</div>
-                            <div class="me-2">Posted by {{posts[postOpened].postUserName}}</div>
-                            <div class="me-2">{{relativeDate(currentDate, posts[postOpened].postDate)}}</div>
-                        </div>
-                    </div>
-
-                    <div class="card-body">
-                        <h5 class="card-title">{{posts[postOpened].postSubject}}</h5>
-                        <p class="card-text">{{posts[postOpened].postContent}}</p>
-                        <div class="d-flex align-items-center mb-4">
-                            <div class="me-2">{{posts[postOpened].postLikes.length - 1}}</div>
-                            <div v-if="inArray(currentUser.userKey, posts[postOpened].postLikes)" class="d-inline me-2"
-                                @click="removeLike(posts[postOpened].postLikes)">
-                                <img src="./Resources/Like (Filled).png" width="20" height="20">
+    
+                    <div v-for="post in posts" class="card mb-3 all" @click="openPost(post.postId)">
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                                <div class="me-2"><button class="btn btn-success">{{post.postTopic}}</button></div>
+                                <div class="me-2">Posted by {{post.postUserName}}</div>
+                                <div class="me-2">{{relativeDate(currentDate, post.postDate)}}</div>
                             </div>
-                            <div v-if="!inArray(currentUser.userKey, posts[postOpened].postLikes)" class="d-inline me-2"
-                                @click="addLike(posts[postOpened].postLikes)">
-                                <img src="./Resources/Like (Unfilled).png" width="20" height="20">
+                        </div>
+    
+                        <div class="card-body">
+                            <h5 class="card-title">{{post.postSubject}}</h5>
+                            <p class="card-text">{{post.postContent}}</p>
+                            <div class="d-flex align-items-center">
+                                <div class="me-1">{{post.postLikes.length - 1}}</div>
+                                <div class="me-2">Likes</div>
+                                <div class="me-1">{{post.postReplies.length - 1}}</div>
+                                <div class="me-2">Replies</div>
                             </div>
-                            <div class="me-2">{{posts[postOpened].postReplies.length - 1}} Replies</div>
                         </div>
-
-                        <div class="input-group mt-3 mb-3">
-                            <input v-model="newReplyContent" type="text" class="form-control"
-                                placeholder="Type your reply">
-                            <button @click="addReply()" class="btn btn-success">Reply</button>
+    
+                    </div>
+    
+                </div>
+    
+                <div v-if="showPage === 'showPostPage'">
+                    <button class="btn btn-success" @click="browse()">Browse</button>
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                                <div class="me-2"><button class="btn btn-success">{{posts[postOpened].postTopic}}</button></div>
+                                <div class="me-2">Posted by {{posts[postOpened].postUserName}}</div>
+                                <div class="me-2">{{relativeDate(currentDate, posts[postOpened].postDate)}}</div>
+                            </div>
                         </div>
-
-                        <div v-if="posts[postOpened].postReplies.length > 1" class="list-group">
-                            <div v-for="(reply, index) in posts[postOpened].postReplies" class="list-group-item">
-                                <div v-if="reply != 'ignore'">
-                                    {{reply.replyLikes.length - 1}}
-                                    <div v-if="inArray(currentUser.userKey, reply.replyLikes)" class="d-inline me-2"
-                                        @click="removeLikeReply(reply, index)">
-                                        <img src="./Resources/Like (Filled).png" width="20" height="20">
+    
+                        <div class="card-body">
+                            <h5 class="card-title">{{posts[postOpened].postSubject}}</h5>
+                            <p class="card-text">{{posts[postOpened].postContent}}</p>
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="me-1">{{posts[postOpened].postLikes.length - 1}}</div>
+                                <div v-if="inArray(currentUser.userKey, posts[postOpened].postLikes)" class="d-inline me-2"
+                                    @click="removeLike(posts[postOpened].postLikes)">
+                                    <img src="./assets/img/Unlike Button.png" width="20" height="20">
+                                </div>
+                                <div v-if="!inArray(currentUser.userKey, posts[postOpened].postLikes)" class="d-inline me-2"
+                                    @click="addLike(posts[postOpened].postLikes)">
+                                    <img src="./assets/img/Like Button.png" width="20" height="20">
+                                </div>
+                                <div class="me-2">{{posts[postOpened].postReplies.length - 1}} Replies</div>
+                            </div>
+    
+                            <div class="input-group mt-3 mb-3">
+                                <input v-model="newReplyContent" type="text" class="form-control"
+                                    placeholder="Type your reply">
+                                <button @click="addReply()" class="btn btn-success">Reply</button>
+                            </div>
+    
+                            <div v-if="posts[postOpened].postReplies.length > 1" class="list-group">
+                                <div v-for="(reply, index) in posts[postOpened].postReplies" class="list-group-item">
+                                    <div v-if="reply != 'ignore'">
+                                        {{reply.replyLikes.length - 1}}
+                                        <div v-if="inArray(currentUser.userKey, reply.replyLikes)" class="d-inline me-2"
+                                            @click="removeLikeReply(reply, index)">
+                                            <img src="./assets/img/Unlike Button.png" width="20" height="20">
+                                        </div>
+                                        <div v-if="!inArray(currentUser.userKey, reply.replyLikes)" class="d-inline me-2"
+                                            @click="addLikeReply(reply, index)">
+                                            <img src="./assets/img/Like Button.png.png" width="20" height="20">
+                                        </div>
+                                        {{relativeDate(currentDate, reply.replyDate)}} {{users[reply.userId].fName}}
+                                        {{users[reply.userId].lName}}<br>
+                                        {{reply.replyContent}}
                                     </div>
-                                    <div v-if="!inArray(currentUser.userKey, reply.replyLikes)" class="d-inline me-2"
-                                        @click="addLikeReply(reply, index)">
-                                        <img src="./Resources/Like (Unfilled).png" width="20" height="20">
-                                    </div>
-                                    {{relativeDate(currentDate, reply.replyDate)}} {{users[reply.userId].fName}}
-                                    {{users[reply.userId].lName}}<br>
-                                    {{reply.replyContent}}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div v-if="showPage === 'createNewPostPage'">
-                <button @click="browse()">Browse</button>
-
-                <div class="mt-3 mb-3">
-                    <input v-model="newPostTopic" type="text" class="form-control" placeholder="Topic e.g Diabetes">
-                    <input v-model="newPostSubject" type="text" class="form-control"
-                        placeholder="Subject e.g What foods are delicious and sugar free?">
-                    <input v-model="newPostContent" type="text" class="form-control" placeholder="Content">
-                    <button @click="createNewPost()" class="btn btn-success">Post</button>
+    
+                <div v-if="showPage === 'createNewPostPage'">
+                    <button @click="browse()">Browse</button>
+    
+                    <div class="mt-3 mb-3">
+                        <input v-model="newPostTopic" type="text" class="form-control" placeholder="Topic e.g Diabetes">
+                        <input v-model="newPostSubject" type="text" class="form-control"
+                            placeholder="Subject e.g What foods are delicious and sugar free?">
+                        <input v-model="newPostContent" type="text" class="form-control" placeholder="Content">
+                        <button @click="createNewPost()" class="btn btn-success">Post</button>
+                    </div>
+    
                 </div>
-
+    
             </div>
+    
+        </div>
+    
 
         </div>
 
-    </div>
-
+        
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="...HUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 
