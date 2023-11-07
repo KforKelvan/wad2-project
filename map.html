@@ -29,7 +29,7 @@
 
 <body>
 
-  <div id="app" data-v-app="">
+  <!-- <div id="app" data-v-app="">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-success" id="navbar">
         <a class="navbar-brand ps-3" href="afterloginhome.html">HealthBuddy</a>
 
@@ -59,7 +59,7 @@
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="#!">Logout</a></li>
                 </ul>
-            </li>
+            </li> -->
   <div id="app1">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-success" id="navbar">
       <a class="navbar-brand ps-3" href="afterloginhome.html">HealthBuddy</a>
@@ -105,8 +105,9 @@
       </ul>
     </nav>
   </div>
-  <div class="container-fluid ">
-    <h1 class="title bg-success bg-opacity:1">Find the Nearest Clinic</h1>
+  <div class="container-fluid bg-success bg-opacity:1 pt-5">
+    <h1 class="title">Find the Nearest Clinic</h1>
+    <p class="header-text">Use our built-in Google Maps function and input your preferred travel mode to find the polyclinic or hospital nearest to you!</p>
   </div>
 
   <div id="container">
@@ -114,7 +115,7 @@
     <div id="directionsPanel"></div>
   </div>
   
-  <div class="controls">
+  <!-- <div class="controls">
     <label for="clinicType">Select Clinic Type:</label>
     <select name="clinicType" id="clinicType">
       <option value="polyclinic">Polyclinic</option>
@@ -122,13 +123,34 @@
       <option value="both">Both</option>
     </select>
     <label for="travelMode">Select Travel Mode:</label>
-    <button style="background-color: lightgreen; color: white;" id="findNearest" onclick="findNearestClinic()">Find
-      Nearest Clinic</button>
     <select name="travelMode" id="travelMode">
       <option value="DRIVING">Driving</option>
       <option value="TRANSIT">Public Transport</option>
       <option value="WALKING">Walking</option>
     </select>
+    <button style="background-color: lightgreen; color: white;" id="findNearest" onclick="findNearestClinic()">Find Nearest Clinic</button>
+  </div> -->
+
+  <div class="controls">
+    <form>
+    <p>Select Clinic Type: </p>
+    <input type="radio" name="clinicType" id="polyclinic" value="polyclinic">
+    <label for="polyclinic">Polyclinic</label>
+    <input type="radio" name="clinicType" id="hospital" value="hospital">
+    <label for="hospital">Hospital</label>
+    <input type="radio" name="clinicType" id="both" value="both">
+    <label for="both">Both</label>
+    <br>
+
+    <p>Select Travel Mode:</p>
+    <input type="radio" name="travelMode" id="driving" value="DRIVING">
+    <label for="driving">Driving</label>
+    <input type="radio" name="travelMode" id="transit" value="TRANSIT">
+    <label for="transit">Public Transport</label>
+    <input type="radio" name="travelMode" id="walking" value="WALKING">
+    <label for="walking">Walking</label>
+    <br>
+    </form>
     <button style="background-color: lightgreen; color: white;" id="findNearest" onclick="findNearestClinic()">Find Nearest Clinic</button>
   </div>
 
