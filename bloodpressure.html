@@ -28,7 +28,12 @@
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-database-compat.js"></script>
     <!-- icons  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
-
+    <style>
+        body{
+            background-color: #a8e0c3;
+        }
+    </style>
+    
 </head>
 
 <body class="sb-nav-fixed">
@@ -85,21 +90,21 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <div class="row mb-3">
-                                <div class="col">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                                     <div class="form-floating mb-3 mb-md-0">
                                         <input class="form-control" id="date" type="date" placeholder=""
                                             v-model="date" />
                                         <label for="date">Entry date</label>
                                     </div>
                                 </div>
-                                <div class="col">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-6">
                                     <div class="form-floating mb-3 mb-md-0">
                                         <input class="form-control" id="diastolicBP" type="text" placeholder=""
                                             v-model="diastolicBP" />
                                         <label for="diastolicBP">Diastolic Blood Pressure</label>
                                     </div>
                                 </div>
-                                <div class="col">
+                                <div class=" col-lg-4 col-md-4 col-sm-6 col-6">
                                     <div class="form-floating mb-3 mb-md-0">
                                         <input class="form-control" id="systolicBP" type="text" placeholder=""
                                             v-model="systolicBP" />
