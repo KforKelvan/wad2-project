@@ -3,6 +3,7 @@ var directionsService;
 var directionsDisplay;
 var markers = [];
 
+
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: 1.2963, lng: 103.8502 }, 
@@ -196,3 +197,6 @@ function clearMarkers() {
   markers = [];
   directionsDisplay.setMap(null);
 }
+
+
+
