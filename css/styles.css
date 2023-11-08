@@ -346,6 +346,7 @@ padding: 20px 0;
     align-items: center;
 }
 
+
 /* ul {
     list-style: none;
     padding: 0;
@@ -405,7 +406,7 @@ a {
 }
 
 .move-bottom {
-    padding-top: 60px;
+    padding-top: 10px;
 }
 
 .logo {
