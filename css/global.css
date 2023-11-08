@@ -79,3 +79,7 @@ body {
     margin: auto;
     background-color: white;
 }
+
+.logo.circle {
+    border-radius: 50%;
+}
