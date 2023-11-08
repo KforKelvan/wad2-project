@@ -20,21 +20,3 @@
     margin: auto;
     background-color: white;
 }
-
-.title {
-    padding-top: 30px;
-    display: flex;
-    justify-content: center ;
-    text-align: center;
-    padding-bottom: 3%; 
-    color: white;
-    font-family: var(--Playfair);   
-}
-
-.header-text {
-    color: white;
-    text-align: center;
-    font-family: var(--Playfair);
-    padding-bottom: 5%;
-    font-size: large;
-}
