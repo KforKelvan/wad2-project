@@ -4,7 +4,7 @@
 <head>
   <title>Find Nearest Clinic</title>
 
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/mapstyles.css">
   <link rel="stylesheet" href="css/global.css">
   
 
@@ -88,84 +88,37 @@
             <!-- Navbar -->
         </div>
     </div>
-  <!-- <div id="app1">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="afterloginhome.html">
-                <i class="fab fa-github fa-2x mx-3 ps-1"></i>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="afterloginhome.html">Home</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="trackerDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Tracker
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="trackerDropdown">
-                            <li><a class="dropdown-item" href="bloodpressure.html">Blood Pressure Tracker</a></li>
-                            <li><a class="dropdown-item" href="bloodglucose.html">Blood Glucose Tracker</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="alert.html">Notification</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="map.html">Map</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="forum.html">Forum</a>
-                    </li>
-                </ul>
-               
-                <ul class="navbar-nav d-flex flex-row ms-auto me-3">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" @click="logout()">Logout</a></li>
-                        </ul>
-
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</div> -->
-
-
 
   <div class="bg-success bg-opacity:1 pt-5">
     <h1 class="title">Find the nearest Clinic</h1>
     <p class="header-text">Use our maps function and input your preferred travel mode to find the nearest polyclinic or hospital to you!</p>
   </div>
+
   <div id="container">
     <div id="map"></div>
     <div id="directionsPanel"></div>
   </div>
-
+  
   <div class="controls">
-    <label for="clinicType">Select Clinic Type:</label>
-    <select name="clinicType" id="clinicType">
-      <option value="polyclinic">Polyclinic</option>
-      <option value="hospital">Hospital</option>
-      <option value="both">Both</option>
-    </select>
-    <label for="travelMode">Select Travel Mode:</label>
-    <select name="travelMode" id="travelMode">
-      <option value="DRIVING">Driving</option>
-      <option value="TRANSIT">Public Transport</option>
-      <option value="WALKING">Walking</option>
-    </select>
-    <button style="background-color: lightgreen; color: white;" id="findNearest" onclick="findNearestClinic()">Find
-      Nearest Clinic</button>
+    <div class="clinic">
+      <select class="form-select form-select-sm" aria-label="Select Clinic Type" name="clinicType" id="clinicType">
+        <option selected>Select Clinic Type</option>
+        <option value="polyclinic">Polyclinic</option>
+        <option value="hospital">Hospital</option>
+        <option value="both">Both</option>
+      </select>
+    </div>
+
+    <div class="travel">
+      <select class="form-select form-select-sm" aria-label="Select Travel Mode" name="travelMode" id="travelMode">
+        <option selected>Select Travel Mode</option>
+        <option value="DRIVING">Driving</option>
+        <option value="TRANSIT">Public Transport</option>
+        <option value="WALKING">Walking</option>
+      </select>
+    </div>
+  
+    <button class="btn btn-success" id="findNearest" onclick="findNearestClinic()">Find Nearest Clinic</button>
   </div>
 
   <div class="footer-basic aos-init aos-animate" data-aos="fade-in" data-aos-duration="1500">
