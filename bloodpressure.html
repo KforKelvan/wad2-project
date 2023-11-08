@@ -39,7 +39,7 @@
 <body class="sb-nav-fixed">
     <div id="app">
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-success" id ="navbar">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-success" id="navbar">
             <div class="container-fluid">
                 <a class="navbar-brand" href="afterloginhome.html">
                     <i class="fas fa-heartbeat customSize"></i>
@@ -90,49 +90,57 @@
             </div>
         </nav>
         <!-- Navbar -->
-
+        <!-- JUMBOTRON -->
+        <div class="p-5 mb-4 bg-success rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">Custom jumbotron</h1>
+                <p class="col-md-8 fs-4">Using a series of utilities, you can create this jumbotron, just like the one
+                    in previous versions of Bootstrap. Check out the examples below for how you can remix and restyle it
+                    to your liking.</p>
+                <button class="btn btn-primary btn-lg" type="button">Example button</button>
+            </div>
+        </div>
+        <!-- JUMBOTRON -->
+        <!-- TRACKER DO NOT TOUCH -->
         <div>
-            <main>
-                <div class="container-fluid px-4">
-                    <h1 class="mt-4">Enter Blood Pressure Reading</h1>
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <div class="row mb-3">
-                                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                    <div class="form-floating mb-3 mb-md-0">
-                                        <input class="form-control" id="date" type="date" placeholder=""
-                                            v-model="date" />
-                                        <label for="date">Entry date</label>
-                                    </div>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Enter Blood Pressure Reading</h1>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input class="form-control" id="date" type="date" placeholder="" v-model="date" />
+                                    <label for="date">Entry date</label>
                                 </div>
-                                <div class="col-lg-4 col-md-4 col-sm-6 col-6">
-                                    <div class="form-floating mb-3 mb-md-0">
-                                        <input class="form-control" id="diastolicBP" type="text" placeholder=""
-                                            v-model="diastolicBP" />
-                                        <label for="diastolicBP">Diastolic Blood Pressure</label>
-                                    </div>
-                                </div>
-                                <div class= "col-lg-4 col-md-4 col-sm-6 col-6">
-                                    <div class="form-floating mb-3 mb-md-0">
-                                        <input class="form-control" id="systolicBP" type="text" placeholder=""
-                                            v-model="systolicBP" />
-                                        <label for="systolicBP">Systolic Blood Pressure</label>
-                                    </div>
-                                </div>
-
                             </div>
-                            <button class="btn btn-primary" @click="submitEntry()">Submit</button>
-                        </div>
-                    </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input class="form-control" id="diastolicBP" type="text" placeholder=""
+                                        v-model="diastolicBP" />
+                                    <label for="diastolicBP">Diastolic Blood Pressure</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input class="form-control" id="systolicBP" type="text" placeholder=""
+                                        v-model="systolicBP" />
+                                    <label for="systolicBP">Systolic Blood Pressure</label>
+                                </div>
+                            </div>
 
-                    <h1 class="mt-4">Blood Pressure Records</h1>
-                    <div class="card mb-4">
-                        <div class="container-fluid p-4">
-                            <table id="datatable" class="table table-striped" style="width:100%"></table>
                         </div>
+                        <button class="btn btn-primary" @click="submitEntry()">Submit</button>
                     </div>
                 </div>
-            </main>
+
+                <h1 class="mt-4">Blood Pressure Records</h1>
+                <div class="card mb-4">
+                    <div class="container-fluid p-4">
+                        <table id="datatable" class="table table-striped" style="width:100%"></table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
