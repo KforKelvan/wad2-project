@@ -85,8 +85,8 @@
         </nav>
 
         <div class="bg-success bg-opacity:1 pt-5"> 
-            <h1 class="title">Find the nearest Clinic</h1> 
-            <p class="header-text">Use our maps function and input your preferred travel mode to find the nearest polyclinic or hospital to you!</p> 
+            <h1 class="title">HealthBuddy Community Forum</h1> 
+            <p class="header-text">Use our HealthBuddy Community forum to discuss healthcare matters!</p> 
           </div>
 
         <div class="move-bottom">
@@ -189,7 +189,7 @@
                         <input v-model="newPostTopic" type="text" class="form-control" placeholder="Topic e.g Diabetes">
                         <input v-model="newPostSubject" type="text" class="form-control"
                             placeholder="Subject e.g What foods are delicious and sugar free?">
-                        <input v-model="newPostContent" type="text" class="form-control" placeholder="Content">
+                            <textarea v-model="newPostContent" class="form-control custom-input" placeholder="Content" rows="4"></textarea>
                         <button @click="createNewPost()" class="btn btn-success">Post</button>
                     </div>
     
