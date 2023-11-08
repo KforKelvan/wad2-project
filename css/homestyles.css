@@ -95,7 +95,7 @@ input{
 .cards {
     position:relative;
     height:50vh;
-    width: 45vw;
+    width: 50vw;
     margin-bottom: 20px;
     perspective: 1000px;
     transform-style: preserve-3d;
@@ -114,6 +114,7 @@ input{
 .cards .card{
     position: relative;
     height:100%;
+    width: 100%;
     background-color: #bcfcdb;
     border-radius: 10px;
     padding:30px 35px;
@@ -130,7 +131,6 @@ input{
     margin-top: 23px;
     width: 86%;
     height: 220px;
-    /* object-fit: cover; */
     transition:all .7s;
 }
 
@@ -172,7 +172,8 @@ input{
 }
 
 .infos .name{
-    font-size: 30px;
+    /* font-size: 35px; */
+    font-size: 3.5vw;
     color: var(--current-color1);
     letter-spacing: 8px;
     margin-bottom:20px;
@@ -181,7 +182,8 @@ input{
 }
 
 .card .points{
-    font-size: 15.5px;
+    /* font-size: 15.5px; */
+    font-size: 1.5vw;
     color: black;
     letter-spacing: 3px;
 }
