@@ -31,6 +31,12 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!--moment-->
     <script src="https://momentjs.com/downloads/moment.js"></script>
+    <!--css-->
+    <link rel="stylesheet" href="css/alert.css">
+    <!--tooltip-->
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6.3.0/dist/tippy.css">
+    <script src="https://unpkg.com/tippy.js@6.3.0/dist/tippy.all.umd.min.js"></script>
+
 
 
 </head>
@@ -91,39 +97,51 @@
                     <h1 class="mt-4">Enter Alert Timing</h1>
                     <div class="card mb-4">
                         <div class="card-body">
-                            <div class="row mb-3">
-                                <div class="col">
-                                    <div class="form-floating mb-3 mb-md-0">
-                                        <input class="form-control" id="Msg" type="text" placeholder="" v-model="Msg" />
-                                        <label for="Msg">Message</label>
+                            <form @submit.prevent="submitEntry">
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <div class="form-floating mb-3 mb-md-0">
+                                            <input class="form-control" id="Msg" type="text" placeholder="" v-model="Msg" required/>
+                                            <label for="Msg">Message</label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-floating mb-3 mb-md-0">
+                                            <input class="form-control" id="TeleID" type="text" placeholder=""
+                                                v-model="TeleID" required/>
+                                            <label for="TeleID">Telegram ID</label>
+                                        </div>
+                                        <!-- <span class="info-icon" @mouseover="showTelegramIdInfo">ℹ️</span> -->
+                                        <span class="info-icon" data-tippy-content="You can find your Telegram ID through the Telegram bot">ℹ️</span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-floating mb-3 mb-md-0">
+                                            <input class="form-control" id="datetime" type="datetime-local" placeholder=""
+                                                v-model="datetime" required/>
+                                            <label for="date">Date & Time of Alert</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div class="form-floating mb-3 mb-md-0">
-                                        <input class="form-control" id="TeleID" type="text" placeholder=""
-                                            v-model="TeleID" />
-                                        <label for="TeleID">Telegram ID</label>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-floating mb-3 mb-md-0">
-                                        <input class="form-control" id="datetime" type="datetime-local" placeholder=""
-                                            v-model="datetime" />
-                                        <label for="date">Date & Time of Alert</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary" @click="submitEntry()">Submit</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
                         </div>
                     </div>
 
                     <h1 class="mt-4">Your Alerts</h1>
-                    <div class="card mb-4">
+                    <!-- <div class="card mb-4">
                         <div class="card-body">
                             <table id="datatable" class="table table-striped" style="width:100%"></table>
-
                         </div>
-                    </div>
+                    </div> -->
+                    <!-- our component -->
+                    <alert-tracker 
+                    v-for='(alert, idx) in alertList' 
+                    v-bind:key='idx' 
+                    v-bind:alert='alert' 
+                    v-bind:idx='idx'
+                    v-bind:class="alertBackgroundColorClass(idx)"
+                    v-on:delete='deleteAlert'
+                ></alert-tracker>
                 </div>
             </main>
         </div>
@@ -158,7 +176,8 @@
                 entries: [],
                 datetime: "",
                 TeleID: "",
-                Msg: ""
+                Msg: "",
+                alertList:[],
             }
         },
         methods: {
@@ -171,7 +190,8 @@
                     // datetime: (this.datetime).replace("T"," "),
                     datetime: this.datetime,
                 });
-                table.row.add([this.Msg, this.TeleID, this.datetime]).draw(); //adding a row in datatable 
+                // table.row.add([this.Msg, this.TeleID, this.datetime]).draw(); //adding a row in datatable
+                this.alertList.push( { 'Msg': this.Msg, 'TeleID': this.TeleID, 'datetime':this.datetime } )
                 //Clear input fields
                 this.Msg = "";
                 this.TeleID = "";
@@ -180,6 +200,22 @@
             logout() {
                 localStorage.removeItem("user");
                 window.location.href = "login.html";
+            },
+
+            async getAlerts() {
+                try {
+                const userRef = database.ref('alerts/' + this.currentUser.userKey + '/alertEntries');
+                const snapshot = await userRef.once('value');
+                const alertData = snapshot.val();
+
+                if (alertData) {
+                    // Convert alertData to an array (if needed) for easy iteration
+                    const alertList = Object.values(alertData);
+                    this.alertList = alertList;
+                }
+                } catch (error) {
+                console.error('Error fetching alert data:', error);
+                }
             },
 
             async getEntries() {
@@ -194,39 +230,112 @@
                 for (let entry of entriesArr) {
                     valuesArr.push(Object.values(entry));
                 }
+                // Create Table
+                // table = new DataTable('#datatable', {
+                //     columns: [
+                //         { title: 'Message' },
+                //         { title: 'Telegram ID' },
+                //         { title: "Date & Time of Alert" },
+                //         { title: "Action" },
+                //     ],
+                //     data: valuesArr,
+                //     columnDefs: [
+                //         {
+                //             targets: -1, // Target the last column (Action)
+                //             data: null,
+                //             render: function (data, type, row, meta) {
+                //                 // Use meta.row to get the row index and create a unique index
+                //                 var rowIndex = meta.row;
 
-                //Create Table
-                table = new DataTable('#datatable', {
-                    columns: [
-                        { title: 'Message' },
-                        { title: 'Telegram ID' },
-                        { title: "Date & Time of Alert" },
-                        { title: "Action" },
-                    ],
-                    data: valuesArr,
-                    columnDefs: [
-                        {
-                            targets: -1, // Target the last column (Action)
-                            data: null,
-                            render: function (data, type, row, meta) {
-                                // Use meta.row to get the row index and create a unique index
-                                var rowIndex = meta.row;
+                //                 // Create a delete button with a unique index
+                //                 return '<button class="delete-button" data-index="' + rowIndex + '"><i class="fas fa-trash-alt"></i></button>';
+                //             }
+                //         },
+                //     ],
+                // });
+            },
+            // async deleteAlert(index) {
+            //     var ref = database.ref('alerts/' + currentUser.userKey + '/alertEntries');
+            //     let snapshot = await ref.once('value');
+            //     entries = snapshot.val();
+            //     recordKeys = Object.keys(entries); //recordkeys only exist in here 
+            //     console.log(recordKeys[0]);
+            //     let rKey = recordKeys[index];
+            //     let recordRef = database.ref('alerts/' + currentUser.userKey + '/alertEntries/' + rKey);
+            //     recordRef.remove()
+            //         .then(() => {
+            //             console.log('Record deleted successfully.');
+            //         })
+            //         .catch(error => {
+            //             console.error('Error deleting record:', error);
+            //         });
+            // }
+            async deleteAlert(index) {
+                try {
+                    const ref = database.ref('alerts/' + currentUser.userKey + '/alertEntries');
+                    const snapshot = await ref.once('value');
+                    const entries = snapshot.val();
+                    const recordKeys = Object.keys(entries);
+                    const rKey = recordKeys[index];
+                    const recordRef = database.ref('alerts/' + currentUser.userKey + '/alertEntries/' + rKey);
 
-                                // Create a delete button with a unique index
-                                return '<button class="delete-button" data-index="' + rowIndex + '"><i class="fas fa-trash-alt"></i></button>';
-                            }
-                        },
-                    ],
-                });
+                    await recordRef.remove();
+
+                    // Update the alertList in your Vue component
+                    this.alertList.splice(index, 1); // Remove the alert from the list
+                    console.log('Record deleted successfully.');
+                } catch (error) {
+                    console.error('Error deleting record:', error);
+                }
+            },
+            isDateInPast(date) {
+                const currentDate = moment();
+                const alertDate = moment(date);
+                return alertDate.isBefore(currentDate);
+            },
+            showTelegramIdInfo() {
+        // You can replace this with any user-friendly message or instructions
+                alert("You can find your Telegram ID through the Telegram bot.");
             }
+
+        },
+        computed: {
+            alertBackgroundColorClass() {
+                return (index) => {
+                    const date = this.alertList[index].datetime; // Replace with your date property name
+                    if (this.isDateInPast(date)) {
+                    return 'alert-past'; // CSS class for past dates (e.g., red background)
+                    } else {
+                    return 'alert-future'; // CSS class for future dates (e.g., green background)
+                    }
+                };
+            },
         },
         created() {
             this.currentUser = JSON.parse(localStorage.getItem("user"));
             this.getEntries();
-        },
-
-
+            this.getAlerts();
+        }
     });
+    app.component('alert-tracker', {  
+            props: ['alert', 'idx'],
+            methods:{    
+                deleteAlertEntry() {
+                    this.$emit('delete', this.idx); // Emit the delete event with the index
+            }
+        },
+            template: `
+            <div class="card" style="width: 21rem;display:inline-block;">
+            <div class="card-body">
+                <h5 class="card-title">Time of Alert: {{alert.datetime}}</h5>
+                <hr>
+                <p class="card-text">Telegram ID: {{alert.TeleID}}</p>
+                <p class="card-text">{{alert.Msg}}</p>
+                <button type="button" @click="deleteAlertEntry" class="btn btn-danger">Delete</button>
+            </div>
+            </div>
+            `
+        })
 
     const vm = app.mount("#app")
 
@@ -239,33 +348,33 @@
     let recordKeys = [];
     let currentUser = JSON.parse(localStorage.getItem("user"));
     console.log(currentUser);
-    async function getEntries(index) {
-        var ref = database.ref('alerts/' + currentUser.userKey + '/alertEntries');
-        let snapshot = await ref.once('value');
-        entries = snapshot.val();
-        recordKeys = Object.keys(entries); //recordkeys only exist in here 
-        console.log(recordKeys[0]);
-        let rKey = recordKeys[index];
-        let recordRef = database.ref('alerts/' + currentUser.userKey + '/alertEntries/' + rKey);
-        recordRef.remove()
-            .then(() => {
-                console.log('Record deleted successfully.');
-            })
-            .catch(error => {
-                console.error('Error deleting record:', error);
-            });
-    }
+    // async function getEntries(index) {
+    //     var ref = database.ref('alerts/' + currentUser.userKey + '/alertEntries');
+    //     let snapshot = await ref.once('value');
+    //     entries = snapshot.val();
+    //     recordKeys = Object.keys(entries); //recordkeys only exist in here 
+    //     console.log(recordKeys[0]);
+    //     let rKey = recordKeys[index];
+    //     let recordRef = database.ref('alerts/' + currentUser.userKey + '/alertEntries/' + rKey);
+    //     recordRef.remove()
+    //         .then(() => {
+    //             console.log('Record deleted successfully.');
+    //         })
+    //         .catch(error => {
+    //             console.error('Error deleting record:', error);
+    //         });
+    // }
 
     // function to delete row
-    $(document).ready(function () {
-        $('#datatable').on('click', '.delete-button', function () {
-            var index = $(this).data('index');
-            // console.log('Clicked on delete button at index ' + index);
-            getEntries(index);
-            var row = table.row($(this).parents('tr'));
-            row.remove().draw();
-        });
-    });
+    // $(document).ready(function () {
+    //     $('#datatable').on('click', '.delete-button', function () {
+    //         var index = $(this).data('index');
+    //         // console.log('Clicked on delete button at index ' + index);
+    //         getEntries(index);
+    //         var row = table.row($(this).parents('tr'));
+    //         row.remove().draw();
+    //     });
+    // });
 
     async function getData() {
         var ref = database.ref("alerts/" + currentUser.userKey + "/alertEntries");
@@ -329,4 +438,15 @@
         }
     })();
 </script>
+<script>
+    // Initialize Tippy.js tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+        tippy('.info-icon', {
+            placement: 'top',
+            theme: 'light'
+        });
+    });
+</script>
+
+    
 <!-- <script src="./alert.js"></script> -->
