@@ -29,60 +29,73 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <!-- css -->
     <style>
-        body{
+        body {
             background-color: #a8e0c3;
         }
     </style>
 </head>
 
-<body class="sb-nav-fixed" stlye ="background-color:">
+<body class="sb-nav-fixed" stlye="background-color:">
     <div id="app">
         <div>
-            <nav class="sb-topnav navbar navbar-expand navbar-dark bg-success" id="navbar">
-                <a class="navbar-brand ps-3" href="afterloginhome.html">HealthBuddy</a>
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="home.html">
+                        <i class="fab fa-github fa-2x mx-3 ps-1"></i>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link disabled active" aria-disabled="true">Welcome, {{currentUser.fName + " " +currentUser.lName}}</a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="afterloginhome.html">Home</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle active" href="#" id="trackerDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Tracker
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="trackerDropdown">
+                                    <li><a class="dropdown-item" href="bloodpressure.html">Blood Pressure Tracker</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="bloodglucose.html">Blood Glucose Tracker</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="alert.html">Notification</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="map.html">Map</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="forum.html">Forum</a>
+                            </li>
+                        </ul>
 
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="afterloginhome.html">Home</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle active" href="#" id="trackerDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Tracker
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="trackerDropdown">
-                                <li><a class="dropdown-item" href="bloodpressure.html">Blood Pressure Tracker</a></li>
-                                <li><a class="dropdown-item" href="bloodglucose.html">Blood Glucose Tracker</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="alert.html">Alert</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="map.html">Map</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="forum.html">Forum</a>
-                        </li>
-                    </ul>
-                </div>
+                        <ul class="navbar-nav d-flex flex-row ms-auto me-3">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false"><i
+                                        class="fas fa-user fa-fw"></i></a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" @click="logout()">Logout</a></li>
+                                </ul>
 
-                <div>
-                    <div class="small" style="color: white;">Welcome {{currentUser.fName + " " +currentUser.lName}}!
+                            </li>
+                        </ul>
                     </div>
                 </div>
-
-                <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" @click="logout()">Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
             </nav>
+            <!-- Navbar -->
         </div>
         <div>
             <main>
@@ -112,9 +125,8 @@
 
                     <h1 class="mt-4">Blood Glucose Records</h1>
                     <div class="card mb-4">
-                        <div class="card-body">
+                        <div class="container-fluid p-4">
                             <table id="datatable" class="table table-striped" style="width:100%"></table>
-
                         </div>
                     </div>
                 </div>
