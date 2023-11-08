@@ -69,18 +69,29 @@ header{
 
 
 #container {
-    height: 80%;
+    height: 60%;
     display: flex;
     width: 100%;
-    padding-top: 4%;
     justify-content: space-between;
+    background-color: #a8e0c3;
 }
 
 .title {
-    padding-top: 5%;
+    padding-top: 30px;
     display: flex;
     justify-content: center ;
-    
+    text-align: center;
+    padding-bottom: 3%; 
+    color: white;
+    font-family: var(--Playfair);   
+}
+
+.header-text {
+    color: white;
+    text-align: center;
+    font-family: var(--Playfair);
+    padding-bottom: 5%;
+    font-size: large;
 }
 
 #directionsPanel {
@@ -96,7 +107,7 @@ header{
 #map {
     flex-basis: 0;
     flex-grow: 4;
-    height: 70%;
+    height: 100%;
     width: 50%;
 }
 
