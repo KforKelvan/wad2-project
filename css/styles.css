@@ -69,11 +69,11 @@ header{
 
 
 #container {
-    height: 60%;
+    height: 80%;
     display: flex;
     width: 100%;
     justify-content: space-between;
-    background-color: #a8e0c3;
+    /* background-color: #a8e0c3; */
 }
 
 .title {
