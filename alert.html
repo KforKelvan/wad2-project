@@ -9,10 +9,8 @@
     <meta name="author" content="" />
     <title>Set Alert</title>
     <!-- bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-
-
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <!-- Vue -->
     <script src="https://unpkg.com/vue@next"></script>
     <!-- DataTable-->
@@ -26,17 +24,23 @@
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-database-compat.js"></script>
     <!-- icons  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <!-- axios -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!--moment-->
     <script src="https://momentjs.com/downloads/moment.js"></script>
     <!--css-->
     <link rel="stylesheet" href="css/alert.css">
+    <link rel="stylesheet" href="css/global.css">
     <!--tooltip-->
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6.3.0/dist/tippy.css">
     <script src="https://unpkg.com/tippy.js@6.3.0/dist/tippy.all.umd.min.js"></script>
-
+    <style>
+        body {
+            background-color: #a8e0c3;
+        }
+    </style>
 
 
 </head>
@@ -44,50 +48,56 @@
 <body class="sb-nav-fixed">
     <div id="app">
         <div>
-            <nav class="sb-topnav navbar navbar-expand navbar-dark bg-success" id="navbar">
-                <a class="navbar-brand ps-3" href="afterloginhome.html">HealthBuddy</a>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="afterloginhome.html">
+                        <i class="fas fa-heartbeat customSize"></i>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="afterloginhome.html">Home</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="trackerDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Tracker
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="trackerDropdown">
+                                    <li><a class="dropdown-item" href="bloodpressure.html">Blood Pressure Tracker</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="bloodglucose.html">Blood Glucose Tracker</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="alert.html">Notification</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="map.html">Map</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="forum.html">Forum</a>
+                            </li>
+                        </ul>
 
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="afterloginhome.html">Home</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="trackerDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Tracker
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="trackerDropdown">
-                                <li><a class="dropdown-item" href="bloodpressure.html">Blood Pressure Tracker</a></li>
-                                <li><a class="dropdown-item" href="bloodglucose.html">Blood Glucose Tracker</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="alert.html">Alert</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="map.html">Map</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="forum.html">Forum</a>
-                        </li>
-                    </ul>
-                </div>
+                        <ul class="navbar-nav d-flex flex-row ms-auto me-3">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false"><i
+                                        class="fas fa-user fa-fw"></i></a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" @click="logout()">Logout</a></li>
+                                </ul>
 
-                <div>
-                    <div class="small" style="color: white;">Welcome {{currentUser.fName + " " +currentUser.lName}}!
+                            </li>
+                        </ul>
                     </div>
                 </div>
-
-                <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" @click="logout()">Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
             </nav>
         </div>
 
@@ -99,25 +109,27 @@
                         <div class="card-body">
                             <form @submit.prevent="submitEntry">
                                 <div class="row mb-3">
-                                    <div class="col">
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                                         <div class="form-floating mb-3 mb-md-0">
-                                            <input class="form-control" id="Msg" type="text" placeholder="" v-model="Msg" required/>
+                                            <input class="form-control" id="Msg" type="text" placeholder=""
+                                                v-model="Msg" required />
                                             <label for="Msg">Message</label>
                                         </div>
                                     </div>
-                                    <div class="col">
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-6">
                                         <div class="form-floating mb-3 mb-md-0">
                                             <input class="form-control" id="TeleID" type="text" placeholder=""
-                                                v-model="TeleID" required/>
+                                                v-model="TeleID" required />
                                             <label for="TeleID">Telegram ID</label>
                                         </div>
                                         <!-- <span class="info-icon" @mouseover="showTelegramIdInfo">ℹ️</span> -->
-                                        <span class="info-icon" data-tippy-content="You can find your Telegram ID through the Telegram bot">ℹ️</span>
+                                        <span class="info-icon"
+                                            data-tippy-content="You can find your Telegram ID through the Telegram bot">ℹ️</span>
                                     </div>
-                                    <div class="col">
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-6">
                                         <div class="form-floating mb-3 mb-md-0">
-                                            <input class="form-control" id="datetime" type="datetime-local" placeholder=""
-                                                v-model="datetime" required/>
+                                            <input class="form-control" id="datetime" type="datetime-local"
+                                                placeholder="" v-model="datetime" required />
                                             <label for="date">Date & Time of Alert</label>
                                         </div>
                                     </div>
@@ -134,14 +146,9 @@
                         </div>
                     </div> -->
                     <!-- our component -->
-                    <alert-tracker 
-                    v-for='(alert, idx) in alertList' 
-                    v-bind:key='idx' 
-                    v-bind:alert='alert' 
-                    v-bind:idx='idx'
-                    v-bind:class="alertBackgroundColorClass(idx)"
-                    v-on:delete='deleteAlert'
-                ></alert-tracker>
+                    <alert-tracker v-for='(alert, idx) in alertList' v-bind:key='idx' v-bind:alert='alert'
+                        v-bind:idx='idx' v-bind:class="alertBackgroundColorClass(idx)"
+                        v-on:delete='deleteAlert'></alert-tracker>
                 </div>
             </main>
         </div>
@@ -150,7 +157,9 @@
 
 </html>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
 
 <script>
     // Initialize Firebase 
@@ -177,7 +186,7 @@
                 datetime: "",
                 TeleID: "",
                 Msg: "",
-                alertList:[],
+                alertList: [],
             }
         },
         methods: {
@@ -191,7 +200,7 @@
                     datetime: this.datetime,
                 });
                 // table.row.add([this.Msg, this.TeleID, this.datetime]).draw(); //adding a row in datatable
-                this.alertList.push( { 'Msg': this.Msg, 'TeleID': this.TeleID, 'datetime':this.datetime } )
+                this.alertList.push({ 'Msg': this.Msg, 'TeleID': this.TeleID, 'datetime': this.datetime })
                 //Clear input fields
                 this.Msg = "";
                 this.TeleID = "";
@@ -204,17 +213,17 @@
 
             async getAlerts() {
                 try {
-                const userRef = database.ref('alerts/' + this.currentUser.userKey + '/alertEntries');
-                const snapshot = await userRef.once('value');
-                const alertData = snapshot.val();
+                    const userRef = database.ref('alerts/' + this.currentUser.userKey + '/alertEntries');
+                    const snapshot = await userRef.once('value');
+                    const alertData = snapshot.val();
 
-                if (alertData) {
-                    // Convert alertData to an array (if needed) for easy iteration
-                    const alertList = Object.values(alertData);
-                    this.alertList = alertList;
-                }
+                    if (alertData) {
+                        // Convert alertData to an array (if needed) for easy iteration
+                        const alertList = Object.values(alertData);
+                        this.alertList = alertList;
+                    }
                 } catch (error) {
-                console.error('Error fetching alert data:', error);
+                    console.error('Error fetching alert data:', error);
                 }
             },
 
@@ -294,7 +303,7 @@
                 return alertDate.isBefore(currentDate);
             },
             showTelegramIdInfo() {
-        // You can replace this with any user-friendly message or instructions
+                // You can replace this with any user-friendly message or instructions
                 alert("You can find your Telegram ID through the Telegram bot.");
             }
 
@@ -304,9 +313,9 @@
                 return (index) => {
                     const date = this.alertList[index].datetime; // Replace with your date property name
                     if (this.isDateInPast(date)) {
-                    return 'alert-past'; // CSS class for past dates (e.g., red background)
+                        return 'alert-past'; // CSS class for past dates (e.g., red background)
                     } else {
-                    return 'alert-future'; // CSS class for future dates (e.g., green background)
+                        return 'alert-future'; // CSS class for future dates (e.g., green background)
                     }
                 };
             },
@@ -317,14 +326,14 @@
             this.getAlerts();
         }
     });
-    app.component('alert-tracker', {  
-            props: ['alert', 'idx'],
-            methods:{    
-                deleteAlertEntry() {
-                    this.$emit('delete', this.idx); // Emit the delete event with the index
+    app.component('alert-tracker', {
+        props: ['alert', 'idx'],
+        methods: {
+            deleteAlertEntry() {
+                this.$emit('delete', this.idx); // Emit the delete event with the index
             }
         },
-            template: `
+        template: `
             <div class="card" style="width: 21rem;display:inline-block;">
             <div class="card-body">
                 <h5 class="card-title">Time of Alert: {{alert.datetime}}</h5>
@@ -335,7 +344,7 @@
             </div>
             </div>
             `
-        })
+    })
 
     const vm = app.mount("#app")
 
@@ -440,7 +449,7 @@
 </script>
 <script>
     // Initialize Tippy.js tooltips
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         tippy('.info-icon', {
             placement: 'top',
             theme: 'light'
@@ -448,5 +457,5 @@
     });
 </script>
 
-    
+
 <!-- <script src="./alert.js"></script> -->

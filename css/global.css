@@ -91,23 +91,21 @@ a {
     font-size: large;
 }
 
-body {
-    background-color: rgb(176, 176, 176);
-}
-
-.logo {
-    margin: auto;
-    background-color: white;
-}
-
-.logo.circle {
-    border-radius: 50%;
-}
-
-body {
-    /* background-image: url('../assets/img/login-background-1.avif'); */
-    background-attachment: fixed;
-    background-size: cover;
-    background-color: #a8e0c3;
-
-}
+    body {
+        background-color: rgb(176, 176, 176);
+    }
+    
+    .logo {
+        margin: auto;
+        background-color: white;
+    }
+    
+    .customSize {
+        font-size: 35px;
+    }
+ 
+    /* body {
+        background-image: url('../assets/img/login-background-1.avif');
+        background-attachment: fixed;
+        background-size: cover;
+    } */
