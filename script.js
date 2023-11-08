@@ -96,15 +96,16 @@ function calculateNearestClinic(userLocation, clinicType) {
   var nearestClinic;
   var nearestDistance = Number.MAX_VALUE;
 
-  if (clinicType == "both") {
-    clinics.forEach(function(clinic) {
-      var distance = haversineDistance(userLocation, clinic);
+  if (clinicType == "hospital") {
+    hospitals.forEach(function(hospital) {
+      var distance = haversineDistance(userLocation, hospital);
       if (distance < nearestDistance) {
         nearestDistance = distance;
-        nearestClinic = clinic;
+        nearestClinic = hospital;
       }
     })
   }
+
   else if (clinicType == "polyclinic") {
     polyclinics.forEach(function(polyclinic) {
       var distance = haversineDistance(userLocation, polyclinic);
@@ -115,11 +116,11 @@ function calculateNearestClinic(userLocation, clinicType) {
     })
   }
   else {
-    hospitals.forEach(function(hospital) {
-      var distance = haversineDistance(userLocation, hospital);
+    clinics.forEach(function(clinic) {
+      var distance = haversineDistance(userLocation, clinic);
       if (distance < nearestDistance) {
         nearestDistance = distance;
-        nearestClinic = hospital;
+        nearestClinic = clinic;
       }
     })
   }
@@ -171,6 +172,10 @@ function haversineDistance(point1, point2) {
 
 function calculateAndDisplayRoute(origin, destination) {
     var travelMode = document.getElementById("travelMode").value;
+    console.log(travelMode);
+    if (travelMode == "Select Travel Mode") {
+      travelMode = "DRIVING";
+    }
     var request = {
         origin: origin,
         destination: destination,
