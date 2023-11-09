@@ -7,3 +7,7 @@ body {
 .logo.circle {
     border-radius: 50%;
 }
+
+input {
+    transform: scaleY(0.7);
+  }
