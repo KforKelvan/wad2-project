@@ -89,13 +89,13 @@ input{
     flex-direction: column;
     margin-bottom:100px;
     padding-top: 80px;
-    padding-bottom: 800px;
+    padding-bottom: 900px;
 }
 
 .cards {
     position:relative;
     height:50vh;
-    width: 50vw;
+    width: 45vw;
     margin-bottom: 20px;
     perspective: 1000px;
     transform-style: preserve-3d;

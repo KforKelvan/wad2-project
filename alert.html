@@ -95,7 +95,7 @@
         </div>
 
         <!-- JUMBOTRON -->
-        <div class="p-2 bg-success">
+        <div class="p-2 pt-5 bg-success">
             <div class="container-fluid py-5">
                 <h1 class="display-8 fw-bold" style="text-align: center; color:white">Set a Notification</h1>
                 <p class="fs-5" style="text-align: center;color:white">Need to set a notification to remind you of your
@@ -117,7 +117,7 @@
                                         <div class="form-floating mb-3 mb-md-0">
                                             <input class="form-control" id="datetime" type="datetime-local"
                                                 placeholder="" v-model="datetime" required :min="currentDatetime" />
-                                            <label for="date">Date & Time of Alert</label>
+                                            <label for="datetime">Date & Time of Alert</label>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-6">
@@ -413,4 +413,4 @@
             this.currentUser = JSON.parse(localStorage.getItem("user"));
         },
     }).mount("#app5");
-</script> x
+</script> 
