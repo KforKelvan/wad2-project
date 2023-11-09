@@ -84,9 +84,10 @@
     <!-- JUMBOTRON -->
     <div class="p-2 bg-success">
       <div class="container-fluid py-5">
-          <h1 class="display-8 fw-bold" style="text-align: center; color:white" >Find the nearest Clinic</h1>
-          <p class="fs-5" style="text-align: center;color:white">Use our maps function and input your preferred travel mode to find the nearest polyclinic
-            or hospital to you!</p>
+        <h1 class="display-8 fw-bold" style="text-align: center; color:white">Find the nearest Clinic</h1>
+        <p class="fs-5" style="text-align: center;color:white">Use our maps function and input your preferred travel
+          mode to find the nearest polyclinic
+          or hospital to you!</p>
       </div>
     </div>
     <!-- JUMBOTRON -->
@@ -127,6 +128,9 @@
     <!-- FOOTER -->
     <div class="footer-basic aos-init aos-animate" data-aos="fade-in" data-aos-duration="1500">
       <footer>
+        <div class="social text-dark fw-bold" id="app5">
+          Logged in as: {{currentUser.fName + " " +currentUser.lName}}
+        </div>
         <div class="social">
           <a href="#">
             <iconify-icon icon="ion:logo-apple-appstore"></iconify-icon>
@@ -179,4 +183,15 @@
       console.log(this.currentUser);
     },
   }).mount("#app1");
+
+  const app10 = Vue.createApp({
+    data() {
+      return {
+        currentUser: null,
+      }
+    },
+    created() {
+      this.currentUser = JSON.parse(localStorage.getItem("user"));
+    },
+  }).mount("#app5");
 </script>
