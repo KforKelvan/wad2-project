@@ -91,17 +91,17 @@ a {
     font-size: large;
 }
 
-    body {
-        background-color: rgb(176, 176, 176);
-    }
-    
-    .logo {
-        margin: auto;
-        background-color: white;
-    }
-    
-    .customSize {
-        font-size: 35px;
-    }
+body {
+    background-color: rgb(176, 176, 176);
+}
+
+.logo {
+    margin: auto;
+    background-color: white;
+}
+
+.customSize {
+    font-size: 35px;
+}
  
 
