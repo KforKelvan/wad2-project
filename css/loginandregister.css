@@ -1,0 +1,9 @@
+body {
+    background-image: url('../assets/img/login-background-1.avif');
+    background-attachment: fixed;
+    background-size: cover;
+} 
+
+.logo.circle {
+    border-radius: 50%;
+}
