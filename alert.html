@@ -31,8 +31,7 @@
     <script src="https://unpkg.com/tippy.js@6.3.0/dist/tippy.all.umd.min.js"></script>
     <style>
         body {
-            /* background-color: #a8e0c3; */
-            background-color: white;
+            background-color: #a8e0c3;
         }
     </style>
 
@@ -95,11 +94,20 @@
             </nav>
         </div>
 
+        <!-- JUMBOTRON -->
+        <div class="p-2 bg-success">
+            <div class="container-fluid py-5">
+                <h1 class="display-8 fw-bold" style="text-align: center; color:white" >Set a Notification</h1>
+                <p class="fs-5" style="text-align: center;color:white">Need to set a notification to remind you of your medicial appointment? Look no further!<br> Create and keep track of notifications here which sends you a message on telegram! <br>**Remember to start the HealthBuddy Bot to recieve the message.</p>
+            </div>
+        </div>
+        <!-- JUMBOTRON -->
+
         <div>
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Enter Alert Timing</h1>
-                    <div class="card mb-4">
+                    <h1 class="mt-4">Create a Notification</h1>
+                    <div class="card mb-4" style="background-color: #a8e0c3">
                         <div class="card-body">
                             <form @submit.prevent="submitEntry">
                                 <div class="row mb-3">
@@ -133,7 +141,7 @@
                         </div>
                     </div>
 
-                    <h1 class="mt-4">Your Alerts</h1>
+                    <h1 class="mt-4">Notification Records</h1>
                     <!-- alert component -->
                     <div class="row">
                         <div class="d-flex flex-wrap">
@@ -148,7 +156,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>  
                 </div>
             </main>
         </div>
