@@ -29,8 +29,12 @@
     <!--tooltip-->
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6.3.0/dist/tippy.css">
     <script src="https://unpkg.com/tippy.js@6.3.0/dist/tippy.all.umd.min.js"></script>
-        <!-- AOS -->
-        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- AOS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!--Chatbot-->                
+    <script type='text/javascript'>
+		(function(I, L, T, i, c, k, s) {if(I.iticks) return;I.iticks = {host:c, settings:s, clientId:k, cdn:L, queue:[]};var h = T.head || T.documentElement;var e = T.createElement(i);var l = I.location;e.async = true;e.src = (L||c)+'/client/inject-v2.min.js';h.insertBefore(e, h.firstChild);I.iticks.call = function(a, b) {I.iticks.queue.push([a, b]);};})(window, 'https://cdn-v1.intelliticks.com/prod/common', document, 'script', 'https://app.intelliticks.com', 'PNYC9pEHDGnxainri_c', {});
+    </script>
     <style>
         body {
             background-color: #a8e0c3;
@@ -39,7 +43,7 @@
 
 
 </head>
-
+                
 <body class="sb-nav-fixed">
     <div id="app">
         <div>
@@ -132,6 +136,24 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                        <!-- Frequency -->
+                                        <div class="form-floating mb-3 mb-md-0">
+                                            <input class="form-control" id="frequency" type="number" placeholder=""
+                                                v-model="frequency" required />
+                                            <label for="frequency">Frequency</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                        <!-- Frequency Type -->
+                                        <select class="form-select" id="frequencyType" v-model="frequencyType" required style="height: 60px;">
+                                            <option value="days">Daily</option>
+                                            <option value="weeks">Weekly</option>
+                                            <option value="months">Monthly</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                                         <div class="form-floating mb-3 mb-md-0">
                                             <input class="form-control" id="Msg" type="text" placeholder=""
@@ -149,10 +171,6 @@
                     <!-- alert component -->
                     <div class="row">
                         <div class="d-flex flex-wrap">
-                            <!-- <alert-tracker v-for='(alert, idx) in alertList' v-bind:key='idx' v-bind:alert='alert'
-                                v-bind:idx='idx' v-bind:class="alertBackgroundColorClass(idx)"
-                                v-on:delete='deleteAlert' class="mb-3">
-                            </alert-tracker> -->
                             <div v-for='(alert, idx) in alertList' class="custom-alert-col" :key='idx'>
                                 <div class="mb-3">
                                     <alert-tracker :alert='alert' :idx='idx' :class="alertBackgroundColorClass(idx)"
@@ -225,26 +243,53 @@
                 datetime: "",
                 TeleID: "",
                 Msg: "",
+                frequencyType: "days",
                 alertList: [],
                 currentDatetime: (moment().add(1, 'minutes')).format("YYYY-MM-DDTHH:mm"),
+                frequency:""
             }
         },
         methods: {
             async submitEntry() {
-                var userRef = database.ref('alerts/' + this.currentUser.userKey + '/alertEntries');
-                var newEntryRef = userRef.push();
-                await newEntryRef.set({
-                    Msg: this.Msg,
-                    TeleID: this.TeleID,
-                    // datetime: (this.datetime).replace("T"," "),
-                    datetime: this.datetime,
-                });
-                // table.row.add([this.Msg, this.TeleID, this.datetime]).draw(); //adding a row in datatable
-                this.alertList.push({ 'Msg': this.Msg, 'TeleID': this.TeleID, 'datetime': this.datetime })
-                //Clear input fields
+                const frequency = parseInt(document.getElementById("frequency").value);
+                const frequencyType = document.getElementById("frequencyType").value;
+
+                // Get the selected date and time
+                const selectedDatetime = this.datetime;
+
+                // Create an array to store duplicate dates
+                const duplicateDates = [];
+
+                // Calculate duplicate dates based on frequency and type
+                const startDate = moment(selectedDatetime);
+                for (let i = 0; i < frequency; i++) {
+                    duplicateDates.push(startDate.format("YYYY-MM-DDTHH:mm"));
+                    if (frequencyType === "days") {
+                        startDate.add(1, "days");
+                    } else if (frequencyType === "weeks") {
+                        startDate.add(1, "weeks");
+                    } else if (frequencyType === "months") {
+                        startDate.add(1, "months");
+                    }
+                }
+
+                // Insert the duplicate alert entries into the database
+                const userRef = database.ref('alerts/' + this.currentUser.userKey + '/alertEntries');
+                for (const date of duplicateDates) {
+                    const newEntryRef = userRef.push();
+                    await newEntryRef.set({
+                        Msg: this.Msg,
+                        TeleID: this.TeleID,
+                        datetime: date,
+                    });
+                    this.alertList.push({ 'Msg': this.Msg, 'TeleID': this.TeleID, 'datetime': date})
+                }                
+                // Clear input fields
                 this.Msg = "";
                 this.TeleID = "";
                 this.datetime = "";
+                this.frequency = "";
+                this.frequencyType = "";
             },
             logout() {
                 localStorage.removeItem("user");
@@ -312,6 +357,10 @@
         },
         created() {
             this.currentUser = JSON.parse(localStorage.getItem("user"));
+            if (!this.currentUser) {
+                // Redirect to the login page
+                window.location.href = "login.html";
+            };
             this.getEntries();
             this.getAlerts();
         }
@@ -329,7 +378,7 @@
                 <h5 class="card-title">Time of Alert: {{alert.datetime}}</h5>
                 <hr>
                 <p class="card-text">Telegram ID: {{alert.TeleID}}</p>
-                <p class="card-text">{{alert.Msg}}</p>
+                <p class="card-text">Message: {{alert.Msg}}</p>
                 <button type="button" @click="deleteAlertEntry" class="btn btn-danger">Delete</button>
             </div>
             </div>
