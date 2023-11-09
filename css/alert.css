@@ -3,6 +3,15 @@
 }
 
 .alert-future{
-    background-color: lightgreen;
+    background-color: lightblue;
 }
+.alert-tracker {
+    width: 100%;
+}
+.custom-alert-col {
+    margin-right: 25px; /* Adjust the margin as needed to control spacing between alert-tracker components */
+    margin-bottom: 10px;
+}
+
+
 

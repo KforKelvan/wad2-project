@@ -1,0 +1,56 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #a8e3c0;
+}
+
+#container {
+    height: 80%;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.controls {
+    padding: 20px;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 5vh;
+}
+
+.travel {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#directionsPanel {
+    flex-basis: 15rem;
+    flex-grow: 1;
+    padding: 1rem;
+    max-width: 20rem;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+#map {
+    flex-basis: 0;
+    flex-grow: 4;
+    height: 100%;
+    width: 50%;
+}
+
+#map {
+    flex: auto;
+}
+
+#directionsPanel {
+    flex: 0 1 auto;
+    padding: 0;
+}
+#directionsPanel > .slide  {
+    padding: 0.5rem;
+}
