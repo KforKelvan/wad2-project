@@ -104,7 +104,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <!-- Table 1 -->
-                    <div class="col-lg-6 col-md-12 p-3 rounded-3 border border-3 border-success-subtle" id="app2"
+                    <div class="col-lg col-md-12 p-5 rounded-3 border border-3 border-success-subtle" id="app2"
                         style="background-color: white;">
                         <h1 class="display-7 fw-bold">Blood Glucose</h1>
                         <!-- Inputbox -->
@@ -119,7 +119,7 @@
                             <div class="col-6">
                                 <div class="form-floating">
                                     <select class="form-select" id="floatingSelectDisabled" v-model="month">
-                                        <option value="0">Jan</option>
+                                        <option selected value="0">Jan</option>
                                         <option value="1">Feb</option>
                                         <option value="2">Mar</option>
                                         <option value="3">Apr</option>
@@ -147,9 +147,9 @@
                         </div>
                         <canvas id="lineChart"></canvas>
                     </div>
-
+                    <div class="col-lg-1 col-md-12">&nbsp;</div>
                     <!-- Table 2-->
-                    <div class="col-lg-6 col-md-12 p-3 rounded-3 border border-3 border-success-subtle" id="app3"
+                    <div class="col-lg col-md-12 p-5 rounded-3 border border-3 border-success-subtle" id="app3"
                         style="background-color: white;" id="app3" style="background-color: white;">
                         <h1 class="display-7 fw-bold">Blood Pressure</h1>
                         <!-- Inputbox -->
@@ -164,7 +164,7 @@
                             <div class="col-6">
                                 <div class="form-floating">
                                     <select class="form-select" id="select1" v-model="month">
-                                        <option value="0">Jan</option>
+                                        <option selected value="0">Jan</option>
                                         <option value="1">Feb</option>
                                         <option value="2">Mar</option>
                                         <option value="3">Apr</option>
