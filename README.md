@@ -23,3 +23,9 @@ Download and unzip the file, the starting page for our app is index.html. Users 
 email: hw@gmail.com
 password: password123
 
+# PS 
+In order to receive message from the bot for the telegram notification function: 
+1. Open Telegram
+2. Search for https://t.me/HealthReminderr_Bot
+3. Type in /start to the bot 
+After these 3 steps, you will be able to receive the message from the bot.
