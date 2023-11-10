@@ -12,11 +12,20 @@ Hosted Website URL: https://kforkelvan.github.io/wad2-project/
 
 Github repo URL: https://github.com/KforKelvan/wad2-project
 
-include url for youtube video
+Youtube video URL: https://youtu.be/Sp03N73J19A
 
-include link to google docs 
+Features: https://docs.google.com/document/d/1v4NlUNjym_CNv8-ZVpnXTasQ_Qd95IHKqsLiid8EgRM/edit?usp=sharing
 
 Download and unzip the file, the starting page for our app is index.html. Users can then choose to login if they already have an account, if not they will need to register before they can access the features of our app. 
+
+# Instructions
+
+Instructions for running the app locally: 
+1. Download and unzip our application files in your folder of choice. 
+2. Open up index.html in your browser of choice. This will be the starting page of our application.
+3. Log in using the dummy account details below.
+
+Alternatively, the repository can be cloned to be run locally.
 
 # User account details (Dummy account) for testing purposes or create your own account by registering
 
