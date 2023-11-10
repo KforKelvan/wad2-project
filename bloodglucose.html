@@ -32,9 +32,9 @@
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"> -->
     <!-- css -->
     <link rel="stylesheet" href="css/global.css">
-    <!--Chatbot-->                
+    <!--Chatbot-->
     <script type='text/javascript'>
-		(function(I, L, T, i, c, k, s) {if(I.iticks) return;I.iticks = {host:c, settings:s, clientId:k, cdn:L, queue:[]};var h = T.head || T.documentElement;var e = T.createElement(i);var l = I.location;e.async = true;e.src = (L||c)+'/client/inject-v2.min.js';h.insertBefore(e, h.firstChild);I.iticks.call = function(a, b) {I.iticks.queue.push([a, b]);};})(window, 'https://cdn-v1.intelliticks.com/prod/common', document, 'script', 'https://app.intelliticks.com', 'PNYC9pEHDGnxainri_c', {});
+        (function (I, L, T, i, c, k, s) { if (I.iticks) return; I.iticks = { host: c, settings: s, clientId: k, cdn: L, queue: [] }; var h = T.head || T.documentElement; var e = T.createElement(i); var l = I.location; e.async = true; e.src = (L || c) + '/client/inject-v2.min.js'; h.insertBefore(e, h.firstChild); I.iticks.call = function (a, b) { I.iticks.queue.push([a, b]); }; })(window, 'https://cdn-v1.intelliticks.com/prod/common', document, 'script', 'https://app.intelliticks.com', 'PNYC9pEHDGnxainri_c', {});
     </script>
     <style>
         body {
@@ -47,7 +47,7 @@
     <div id="app">
         <div>
             <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-dark bg-success" id = "navbar">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-success" id="navbar">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="afterloginhome.html">
                         <i class="fas fa-heartbeat customSize"></i>
@@ -103,8 +103,9 @@
         <!-- JUMBOTRON -->
         <div class="p-2 pt-5 bg-success">
             <div class="container-fluid py-5">
-                <h1 class="display-8 fw-bold" style="text-align: center; color:white" >Blood Glucose</h1>
-                <p class="fs-5" style="text-align: center;color:white">Record and keep track of your blood glucose here!</p>
+                <h1 class="display-8 fw-bold" style="text-align: center; color:white">Blood Glucose</h1>
+                <p class="fs-5" style="text-align: center;color:white">Record and keep track of your blood glucose here!
+                </p>
             </div>
         </div>
         <!-- JUMBOTRON -->
@@ -148,8 +149,8 @@
     <!-- FOOTER -->
     <div class="footer-basic aos-init aos-animate" data-aos="fade-in" data-aos-duration="1500">
         <footer>
-            <div class = "social text-dark fw-bold" id = "app5">
-                Logged in as: {{currentUser.fName + " " +currentUser.lName}} 
+            <div class="social text-dark fw-bold" id="app5">
+                Logged in as: {{currentUser.fName + " " +currentUser.lName}}
             </div>
             <div class="social">
                 <a href="#">
@@ -165,10 +166,10 @@
             <p class="copyright">HealthBuddy &copy; IS216</p>
         </footer>
     </div>
-    
-<!-- AOS -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>AOS.init();</script>
+
+    <!-- AOS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init();</script>
 
 </body>
 
@@ -309,14 +310,17 @@
     // function to delete row
     $(document).ready(function () {
         $('#datatable').on('click', '.delete-button', function () {
-            var index = $(this).data('index');
-            // console.log('Clicked on delete button at index ' + index);
-            getEntries(index);
-            var row = table.row($(this).parents('tr'));
-            row.remove().draw();
+            const userConfirmed = window.confirm("Are you sure you want to delete this alert?");
+            if (userConfirmed) {
+                var index = $(this).data('index');
+                // console.log('Clicked on delete button at index ' + index);
+                getEntries(index);
+                var row = table.row($(this).parents('tr'));
+                row.remove().draw();
+            }
         });
     });
-
+   
     const app10 = Vue.createApp({
         data() {
             return {
