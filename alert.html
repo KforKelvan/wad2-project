@@ -373,15 +373,18 @@
         methods: {
             deleteAlertEntry() {
                 this.$emit('delete', this.idx);
-            }
+            },
+            formatDatetime(datetime) {
+                return moment(datetime).format("YYYY-MM-DD HH:mm");
+            },
         },
         template: `
             <div class="card" style="width: 21rem;display:inline-block;">
             <div class="card-body">
-                <h5 class="card-title">Time of Alert: {{alert.datetime}}</h5>
+                <h5 class="card-title">Time of Alert: {{ formatDatetime(alert.datetime)}}</h5>
                 <hr>
-                <p class="card-text">Telegram ID: {{alert.TeleID}}</p>
-                <p class="card-text">Message: {{alert.Msg}}</p>
+                <p class="card-text"><u><strong>Telegram ID:</strong></u> {{alert.TeleID}}</p>
+                <p class="card-text"><u><strong>Message:</strong></u> {{alert.Msg}}</p>
                 <button type="button" @click="deleteAlertEntry" class="btn btn-danger">Delete</button>
             </div>
             </div>
