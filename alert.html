@@ -317,21 +317,24 @@
                 this.entries = snapshot.val();
             },
             async deleteAlert(index) {
-                try {
-                    const ref = database.ref('alerts/' + currentUser.userKey + '/alertEntries');
-                    const snapshot = await ref.once('value');
-                    const entries = snapshot.val();
-                    const recordKeys = Object.keys(entries);
-                    const rKey = recordKeys[index];
-                    const recordRef = database.ref('alerts/' + currentUser.userKey + '/alertEntries/' + rKey);
+                const userConfirmed = window.confirm("Are you sure you want to delete this alert?");
+                if (userConfirmed) {
+                    try {
+                        const ref = database.ref('alerts/' + currentUser.userKey + '/alertEntries');
+                        const snapshot = await ref.once('value');
+                        const entries = snapshot.val();
+                        const recordKeys = Object.keys(entries);
+                        const rKey = recordKeys[index];
+                        const recordRef = database.ref('alerts/' + currentUser.userKey + '/alertEntries/' + rKey);
 
-                    await recordRef.remove();
+                        await recordRef.remove();
 
-                    // Update the alertList in Vue component
-                    this.alertList.splice(index, 1); // Remove the alert from the list
-                    console.log('Record deleted successfully.');
-                } catch (error) {
-                    console.error('Error deleting record:', error);
+                        // Update the alertList in Vue component
+                        this.alertList.splice(index, 1); // Remove the alert from the list
+                        console.log('Record deleted successfully.');
+                    } catch (error) {
+                        console.error('Error deleting record:', error);
+                    }
                 }
             },
             isDateInPast(date) {
